@@ -29,7 +29,7 @@ import PrivateRoute from './components/PrivateRoute';
 import PrivateTenantRoute from './components/PrivateTenantRoute';
 import SideBar from './components/SideBar';
 import TopBar from './components/TopBar';
-import { getUserStateCode } from './utils/authentication/user';
+import { canShowAuthenticatedView } from './utils/authentication/viewAuthentication';
 import { hasSideBar } from './utils/layout/filters';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
@@ -46,8 +46,7 @@ initFontAwesome();
 
 const App = () => {
   const [sideBarCollapsed, setSideBarCollapsed] = useState('');
-  const { user, loading, isAuthenticated } = useAuth0();
-  const stateCode = getUserStateCode(user);
+  const { loading, isAuthenticated } = useAuth0();
 
   function toggleCollapsed() {
     const currentlyCollapsed = sideBarCollapsed === 'is-collapsed';
@@ -84,7 +83,7 @@ const App = () => {
   }
 
   let containerClass = 'wide-page-container';
-  if (hasSideBar(stateCode, isAuthenticated)) {
+  if (canShowAuthenticatedView(isAuthenticated)) {
     containerClass = 'page-container';
   }
 
@@ -96,14 +95,14 @@ const App = () => {
           <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
           <title>Recidiviz Dashboard</title>
           <div>
-            {hasSideBar(stateCode, isAuthenticated) && (
-            <SideBar />
+            {canShowAuthenticatedView(isAuthenticated) && (
+              <SideBar />
             )}
             <div className={containerClass}>
               <TopBar pathname={window.location.pathname} />
               <Switch>
                 <Route exact path="/">
-                  <Redirect to={getLandingViewForState(stateCode)} />
+                  <Redirect to="/revocations" />
                 </Route>
                 <PrivateTenantRoute path="/snapshots" />
                 <PrivateTenantRoute path="/revocations" />

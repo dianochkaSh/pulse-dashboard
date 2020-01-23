@@ -26,7 +26,7 @@ const VIOLATION_TYPES = [
   ['TECHNICAL', 'Technical'],
   ['SUBSTANCE_ABUSE', 'Subs. Use'],
   ['MUNICIPAL', 'Municipal'],
-  ['ABSCONSION', 'Absconsion'],
+  ['ABSCONDED', 'Absconded'],
   ['MISDEMEANOR', 'Misdemeanor'],
   ['FELONY', 'Felony'],
 ];

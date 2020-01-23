@@ -38,8 +38,11 @@ const CaseTable = (props) => {
     if (toInt(a.district) > toInt(b.district)) return 1;
     if (toInt(a.district) < toInt(b.district)) return -1;
 
-    if (a.officer.toLowerCase() > b.officer.toLowerCase()) return 1;
-    if (a.officer.toLowerCase() < b.officer.toLowerCase()) return -1;
+    const aOfficer = a.officer || '';
+    const bOfficer = b.officer || '';
+
+    if (aOfficer.toLowerCase() > bOfficer.toLowerCase()) return 1;
+    if (aOfficer.toLowerCase() < bOfficer.toLowerCase()) return -1;
     return 0;
   });
 
