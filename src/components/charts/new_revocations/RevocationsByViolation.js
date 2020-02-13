@@ -54,6 +54,7 @@ const RevocationsByViolation = (props) => {
         supervision_strategy_count: supervisionStrategyCount,
         travel_count: travelCount,
         weapon_count: weaponCount,
+        violation_count: violationCount,
       }) => {
         return {
           ...result,
@@ -71,13 +72,12 @@ const RevocationsByViolation = (props) => {
           supervisionStrategyCount: (result.supervisionStrategyCount || 0) + (toInt(supervisionStrategyCount) || 0),
           travelCount: (result.travelCount || 0) + (toInt(travelCount) || 0),
           weaponCount: (result.weaponCount || 0) + (toInt(weaponCount) || 0),
+          violationCount: (result.violationCount || 0) + (toInt(violationCount) || 0),
         };
       }, {},
     );
-    console.log(violationToCount);
 
-    const totalViolationCount = Object.values(violationToCount)
-      .reduce((sum, count) => (toInt(sum) || 0) + (toInt(count) || 0), 0);
+    const totalViolationCount = toInt(violationToCount.violationCount) || 0;
 
     const violationTypeDistribution = (type) => {
       if (!totalViolationCount) {
@@ -165,11 +165,11 @@ const RevocationsByViolation = (props) => {
   return (
     <div>
       <h4>
-        Distribution of violation types
+        Relative frequency of violation types
         <ExportMenu
           chartId={chartId}
           chart={chart}
-          metricTitle="Distribution of violation types"
+          metricTitle="Relative frequency of violation types"
         />
       </h4>
       <h6 className="pB-20">

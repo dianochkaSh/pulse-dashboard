@@ -60,7 +60,7 @@ const violationTypeToLabel = {
   municipalCount: 'Municipal',
   residencyCount: 'Residency',
   specialCount: 'Special Conditions',
-  substanceCount: 'Substance Abuse',
+  substanceCount: 'Substance Use',
   supervisionStrategyCount: 'Supervision Strategies',
   travelCount: 'Travel',
   weaponCount: 'Weapons',
