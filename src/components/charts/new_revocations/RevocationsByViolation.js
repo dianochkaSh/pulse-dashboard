@@ -37,7 +37,6 @@ const RevocationsByViolation = (props) => {
   const [denominatorCounts, setDenominatorCounts] = useState([]);
 
   const processResponse = () => {
-    console.log(props.data);
     const violationToCount = props.data.reduce(
       (result, {
         absconded_count: abscondedCount,
