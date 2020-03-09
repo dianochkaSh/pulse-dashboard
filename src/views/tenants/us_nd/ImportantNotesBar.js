@@ -17,6 +17,7 @@
 
 import React from 'react';
 import '../../../assets/styles/index.scss';
+import './ImportantNotesBar.css';
 
 
 const ImportantNotesBar = () => (
@@ -28,6 +29,8 @@ const ImportantNotesBar = () => (
                 aria-controls="importantNotes">
           <h5 id="importantNotesBarHeading" className="lh-1 mB-0 text-left recidiviz-dark-green-text">
             Important Notes
+            <span className="ti-angle-right"></span>
+            <span className="ti-angle-down"></span>
           </h5>
         </button>
         <div id="importantNotes" className="collapse" aria-labelledby="importantNotesBarHeading"
