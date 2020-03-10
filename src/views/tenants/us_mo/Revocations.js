@@ -123,7 +123,27 @@ const Revocations = () => {
 
   useEffect(() => {
     fetchChartData();
+    const onScroll = e => {
+      handlerTopLevel();
+    };
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+
   }, []);
+
+  const handlerTopLevel = () => {
+    if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+      let x = document.body.getElementsByClassName('title-level');
+      for (let i = 0; i < x.length; i++) {
+        x[i].classList.add('top-level-filters-title');
+      }
+    } else {
+      let x = document.body.getElementsByClassName('title-level');
+      for (let i = 0; i < x.length; i++) {
+        x[i].classList.remove('top-level-filters-title');
+      }
+    }
+  };
 
   const updateFilters = (newFilters) => {
     setFilters({ ...filters, ...newFilters });
@@ -243,9 +263,9 @@ const Revocations = () => {
   return (
     <main className="dashboard bgc-grey-100">
       <Sticky style={TOGGLE_STYLE}>
-        <div className="top-level-filters d-f">
+        <div className="top-level-filters d-f" >
           <div className="top-level-filter">
-            <h4>Time Period</h4>
+            <h4 className="title-level">Time Period</h4>
             <Select
               options={METRIC_PERIODS}
               onChange={(option) => updateFilters({ metricPeriodMonths: option.value })}
@@ -253,21 +273,21 @@ const Revocations = () => {
             />
           </div>
           <div className="top-level-filter">
-            <h4>District</h4>
+            <h4 className="title-level">District</h4>
             <Select
               options={districts}
               onChange={(option) => updateFilters({ district: option.value })}
             />
           </div>
           <div className="top-level-filter">
-            <h4>Supervision Level</h4>
+            <h4 className="title-level">Supervision Level</h4>
             <Select
               options={CHARGE_CATEGORIES}
               onChange={(option) => updateFilters({ chargeCategory: option.value })}
             />
           </div>
           <div className="top-level-filter">
-            <h4>Supervision Type</h4>
+            <h4 className="title-level">Supervision Type</h4>
             <Select
               options={SUPERVISION_TYPES}
               onChange={(option) => updateFilters({ supervisionType: option.value })}
