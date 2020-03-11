@@ -99,9 +99,13 @@ function addEmptyMonthsToData(dataPoints, monthCount, valueKey, emptyValue) {
     const remainder = ((i % 12) + 12) % 12;
     const month = (remainder === 0) ? 12 : remainder;
 
-    const monthsAgo = new Date(now.getTime());
-    monthsAgo.setMonth(now.getMonth() + i - 2);
-    const year = monthsAgo.getFullYear();
+    const dateMonthsAgo = new Date(now.getTime());
+    dateMonthsAgo.setMonth(i - 1);
+    const year = dateMonthsAgo.getFullYear();
+
+    if (dateMonthsAgo.getMonth() !== (month - 1)) {
+      console.error(`Month mismatch: month=${month}, dateMonthsAgo=${dateMonthsAgo}`);
+    }
 
     if (!representedMonths[year] || !representedMonths[year][month]) {
       const monthData = {
