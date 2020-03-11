@@ -77,6 +77,7 @@ const DEFAULT_DISTRICT = 'All';
 const TOGGLE_STYLE = {
   zIndex: 700,
   top: 65,
+  height: 122
 };
 
 const CHARTS = ['District', 'Risk level', 'Violation', 'Gender', 'Race'];
