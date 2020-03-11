@@ -135,7 +135,7 @@ const CaseTable = (props) => {
             <th>District</th>
             <th>Officer</th>
             <th>Risk level</th>
-            <th>Officer rec.</th>
+            <th>Officer Recommendation</th>
             <th>Violation record</th>
           </tr>
         </thead>
