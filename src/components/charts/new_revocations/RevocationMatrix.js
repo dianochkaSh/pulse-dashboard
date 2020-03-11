@@ -188,26 +188,28 @@ const RevocationMatrix = (props) => {
       <div className="x-label pY-30">
         Number of violation reports and notices of citations (filed within 6 months before the revocation)
       </div>
-      <div id="revocationMatrix" className="d-f">
-        <div className="y-label" data-html2canvas-ignore>
-          Most severe violation reported (within 6 months before the revocation)
-        </div>
-        <div className={`matrix ${isFiltered ? 'is-filtered' : ''}`}>
-          <div className="violation-counts">
-            <span className="empty-cell" />
-            {VIOLATION_COUNTS.map((count, i) => (
-              <span key={i} className="violation-column">{violationCountLabel(count)}</span>
-            ))}
-            <span className="violation-sum-column top-right-total">Total</span>
+      <div className="matrix-content">
+        <div id="revocationMatrix" className="d-f revocation-matrix">
+          <div className="y-label" data-html2canvas-ignore>
+            Most severe violation reported (within 6 months before the revocation)
           </div>
-          {VIOLATION_TYPES.map(renderRow)}
-          <div className="violation-sum-row">
-            <span className="empty-cell" />
-            {VIOLATION_COUNTS.map((count, i) => (
-              <span key={i} className="violation-column violation-sum">
-                {reportedViolationsSum(count)}
-              </span>
-            ))}
+          <div className={`matrix ${isFiltered ? 'is-filtered' : ''}`}>
+            <div className="violation-counts">
+              <span className="empty-cell" />
+              {VIOLATION_COUNTS.map((count, i) => (
+                <span key={i} className="violation-column">{violationCountLabel(count)}</span>
+              ))}
+              <span className="violation-sum-column top-right-total">Total</span>
+            </div>
+            {VIOLATION_TYPES.map(renderRow)}
+            <div className="violation-sum-row">
+              <span className="empty-cell" />
+              {VIOLATION_COUNTS.map((count, i) => (
+                <span key={i} className="violation-column violation-sum">
+                  {reportedViolationsSum(count)}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -131,6 +131,23 @@
     }
   }
 }
+@media screen and (max-width: 1350px) {
+  .container-all-charts {
+    display: block !important;
+    width: 98%;
+  }
+  .revocation-matrix .matrix-content {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    .revocation-matrix {
+      width:910px;
+    }
+  }
+  .matrix-explanation {
+    margin-right: 20px;
+  }
+}
 
 .matrix-explanation {
   flex: 1 1 0;
