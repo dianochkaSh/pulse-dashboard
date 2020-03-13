@@ -53,6 +53,8 @@ const METRIC_PERIODS = [
 
 const DEFAULT_METRIC_PERIOD = '12';
 
+const DEFAULT_BASE_DISTRICT = { value: 'All', label: 'All districts' };
+
 const CHARGE_CATEGORIES = [
   { value: 'All', label: 'All' },
   { value: 'GENERAL', label: 'General' },
@@ -111,7 +113,7 @@ const Revocations = () => {
       districtValues.sort();
 
       const districtsFromResponse = [
-        { value: 'All', label: 'All districts' },
+        DEFAULT_BASE_DISTRICT,
         ...districtValues.map((district) => ({ value: district, label: district })),
       ];
 
@@ -298,6 +300,7 @@ const Revocations = () => {
               className="select-align"
               options={districts}
               onChange={(option) => updateFilters({ district: option.value })}
+              defaultValue={DEFAULT_BASE_DISTRICT}
             />
           </div>
           <div className="top-level-filter">
@@ -306,6 +309,7 @@ const Revocations = () => {
               className="select-align"
               options={CHARGE_CATEGORIES}
               onChange={(option) => updateFilters({ chargeCategory: option.value })}
+              defaultValue={CHARGE_CATEGORIES[0]}
             />
           </div>
           <div className="top-level-filter">
@@ -314,6 +318,7 @@ const Revocations = () => {
               className="select-align"
               options={SUPERVISION_TYPES}
               onChange={(option) => updateFilters({ supervisionType: option.value })}
+              defaultValue={SUPERVISION_TYPES[0]}
             />
           </div>
         </div>
