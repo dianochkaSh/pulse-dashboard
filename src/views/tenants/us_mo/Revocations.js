@@ -53,6 +53,8 @@ const METRIC_PERIODS = [
 
 const DEFAULT_METRIC_PERIOD = '12';
 
+const DEFAULT_BASE_DISTRICT = { value: 'All', label: 'All districts' };
+
 const CHARGE_CATEGORIES = [
   { value: 'All', label: 'All' },
   { value: 'GENERAL', label: 'General' },
@@ -112,7 +114,7 @@ const Revocations = () => {
       districtValues.sort();
 
       const districtsFromResponse = [
-        { value: 'All', label: 'All districts' },
+        DEFAULT_BASE_DISTRICT,
         ...districtValues.map((district) => ({ value: district, label: district })),
       ];
 
@@ -258,6 +260,7 @@ const Revocations = () => {
             <Select
               options={districts}
               onChange={(option) => updateFilters({ district: option.value })}
+              defaultValue={DEFAULT_BASE_DISTRICT}
             />
           </div>
           <div className="top-level-filter">
@@ -265,6 +268,7 @@ const Revocations = () => {
             <Select
               options={CHARGE_CATEGORIES}
               onChange={(option) => updateFilters({ chargeCategory: option.value })}
+              defaultValue={CHARGE_CATEGORIES[0]}
             />
           </div>
           <div className="top-level-filter">
@@ -272,6 +276,7 @@ const Revocations = () => {
             <Select
               options={SUPERVISION_TYPES}
               onChange={(option) => updateFilters({ supervisionType: option.value })}
+              defaultValue={SUPERVISION_TYPES[0]}
             />
           </div>
         </div>
@@ -296,7 +301,7 @@ const Revocations = () => {
           <p className="fw-300">
             This chart plots all people who were revoked to prison during the selected time period,
             according to their most serious violation and the total number of violation reports and
-            notices of citation filed within 6 months before revocation.
+            notices of citation filed within 12 months before revocation.
           </p>
           <p className="fw-300">
             The numbers inside the bubbles represent the number of people who were revoked, whose
