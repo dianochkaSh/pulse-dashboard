@@ -1,5 +1,5 @@
 // Recidiviz - a data platform for criminal justice reform
-// Copyright (C) 2019 Recidiviz, Inc.
+// Copyright (C) 2020 Recidiviz, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,16 +18,16 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 
-import { COLORS_FIVE_VALUES } from '../../../assets/scripts/constants/colors';
+import { COLORS_SEVEN_VALUES } from '../../../assets/scripts/constants/colors';
 import { configureDownloadButtons } from '../../../assets/scripts/utils/downloads';
 import { getChartDefinition } from './BarCharts';
 
-const chartId = 'revocationsByViolationType';
+const chartId = 'caseTerminationsByTerminationType';
 
 export const getBarChartDefinition = (props) => {
   return getChartDefinition({
     chartId,
-    countsByMonth: props.revocationCountsByMonthByViolationType,
+    countsByMonth: props.caseTerminationCountsByMonthByTerminationType,
     metricType: props.metricType,
     numMonths: props.metricPeriodMonths,
     filters: {
@@ -35,17 +35,20 @@ export const getBarChartDefinition = (props) => {
       supervision_type: props.supervisionType,
     },
     bars: [
-      {key: 'absconsion_count', label: 'Absconsion'},
-      {key: 'felony_count', label: 'New Offense'},
-      {key: 'technical_count', label: 'Technical'},
-      {key: 'unknown_count', label: 'Unknown Type'}
+      {key: 'absconsion', label: 'Absconsion'},
+      {key: 'revocation', label: 'Revocation'},
+      {key: 'suspension', label: 'Suspension'},
+      {key: 'discharge', label: 'Discharge'},
+      {key: 'expiration', label: 'Expiration'},
+      {key: 'death', label: 'Death'},
+      {key: 'other', label: 'Other'}
     ],
-    yAxisLabel: props.metricType === 'counts' ? 'Revocation count' : 'Percentage',
-    barColorPalette: COLORS_FIVE_VALUES
+    yAxisLabel: props.metricType === 'counts' ? 'Case terminations' : 'Percentage',
+    barColorPalette: COLORS_SEVEN_VALUES
   });
 };
 
-const RevocationCountByViolationType = (props) => {
+const CaseTerminationsByTerminationType = (props) => {
   const [chartDefinition, setChartDefinition] = useState(null);
 
   useEffect(() => {
@@ -64,15 +67,15 @@ const RevocationCountByViolationType = (props) => {
 
   const exportedStructureCallback = () => (
     {
-      metric: 'Revocation counts by violation type',
+      metric: 'Case termination counts by termination type',
       series: [],
     });
 
-  configureDownloadButtons(chartId, 'REVOCATIONS BY VIOLATION TYPE',
+  configureDownloadButtons(chartId, 'CASE TERMINATIONS BY TERMINATION TYPE',
     chart.props.data.datasets, chart.props.data.labels,
     document.getElementById(chartId), exportedStructureCallback, props, true, true);
 
   return chart;
 };
 
-export default RevocationCountByViolationType;
+export default CaseTerminationsByTerminationType;
