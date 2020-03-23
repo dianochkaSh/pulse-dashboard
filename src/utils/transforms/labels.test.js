@@ -24,6 +24,9 @@ describe('test label', () => {
    const testValueGender = 'FEMALE';
    const dataAfterTest = labelsMethods.genderValueToHumanReadable(testValueGender);
    expect(dataAfterTest).toBe('Female');
+
+   const dataErrorAfterTest = labelsMethods.genderValueToHumanReadable('White');
+   expect(dataErrorAfterTest).toBe(undefined);
  });
 
  it('get race from  array raceValuetoLabel', () => {
