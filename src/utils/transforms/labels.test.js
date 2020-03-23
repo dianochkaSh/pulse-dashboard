@@ -49,12 +49,18 @@ describe('test label', () => {
   const dataForTest = '999: Lavena Banbridge';
   const dataAfterTest = labelsMethods.toInt(dataForTest);
   expect(dataAfterTest).toBe(999);
+
+  const dataErrorAfterTest = labelsMethods.toInt('Banbridge');
+  expect(dataErrorAfterTest).toBe(NaN);
  });
 
  it('to title case', () => {
    const dataForTest = 'WARNING';
    const dataAfterTest = labelsMethods.toTitleCase(dataForTest);
    expect(dataAfterTest).toEqual('Warning');
+
+   const dataErrorAfterTest = labelsMethods.toTitleCase('');
+   expect(dataErrorAfterTest).toEqual('');
  });
 
  it('human readable title case', () => {
