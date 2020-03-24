@@ -152,8 +152,16 @@ describe('test for file months', () => {
 
     const dataAfterTestLongArray = monthMethods.monthNamesWithYearsFromNumbers(monthNumbersLong, true, false);
     expect(dataAfterTestLongArray).toEqual(dataExpectedLongArray);
-
-
   });
+
+  it('month names from short name', () => {
+
+    const dataAfterTest = monthMethods.monthNamesFromShortName("Jan '20");
+    expect(dataAfterTest).toEqual('January');
+
+    const dataAfterTestError = monthMethods.monthNamesFromShortName("April 19");
+    expect(dataAfterTestError).toEqual(undefined)
+
+  })
 
 });
