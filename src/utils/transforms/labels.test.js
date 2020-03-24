@@ -55,18 +55,18 @@ describe('test label', () => {
  });
 
  it('to title case', () => {
-   const dataForTest = 'WARNING';
+   const dataForTest = 'LOS ANGELES';
    const dataAfterTest = labelsMethods.toTitleCase(dataForTest);
-   expect(dataAfterTest).toEqual('Warning');
+   expect(dataAfterTest).toEqual('Los Angeles');
 
    const dataErrorAfterTest = labelsMethods.toTitleCase('');
    expect(dataErrorAfterTest).toEqual('');
  });
 
  it('human readable title case', () => {
-   const dataForTesting = 'REVOCATION';
+   const dataForTesting = 'SAN FRANCISCO CALIFORNIA';
    const dataAfterTest = labelsMethods.humanReadableTitleCase(dataForTesting);
-   expect(dataAfterTest).toEqual('Revocation');
+   expect(dataAfterTest).toEqual('San Francisco California');
  });
 
  it('number from officer id', () => {
