@@ -15,13 +15,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
 import React from 'react';
-import tk from 'timekeeper';
 import '@testing-library/jest-dom/extend-expect';
 import * as monthMethods from './months';
 
 describe('test for file months', () => {
   const monthNumbers =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3"];
-  const monthNumbersLong =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "1", "2", "3"];
+  const monthNumbersLong =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "-5", "1", "2", "3"];
   const differenceOrderMonthNumbers =  ["6", "8", "4", "7", "5", "9", "10", "1", "12", "11", "2", "3"];
 
   it('get current month name', () => {
