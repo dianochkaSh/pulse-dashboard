@@ -82,7 +82,8 @@
     "@testing-library/react": "^10.0.1",
     "jest-extended": "^0.11.5",
     "node-sass": "4.12.0",
-    "nodemon": "^1.19.0"
+    "nodemon": "^1.19.0",
+    "timekeeper": "^2.2.0"
   },
   "resolutions": {
     "serialize-javascript": "^2.1.1"
