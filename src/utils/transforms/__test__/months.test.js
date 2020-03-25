@@ -16,7 +16,8 @@
 // =============================================================================
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import * as monthMethods from './months';
+import * as monthMethods from '../months';
+import tk from 'timekeeper';
 
 describe('test for file months', () => {
   const monthNumbers =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3"];
@@ -24,13 +25,11 @@ describe('test for file months', () => {
   const differenceOrderMonthNumbers =  ["6", "8", "4", "7", "5", "9", "10", "1", "12", "11", "2", "3"];
 
   it('get current month name', () => {
-    const testDate = new Date('2020-01-14T11:01:58.135Z');
-    jest
-      .spyOn(global, 'Date')
-      .mockImplementation(()=> testDate);
+    const testDate = new Date('2020-02-14T11:01:58.135Z');
+    tk.freeze(testDate);
 
     const dataForTest = monthMethods.getCurrentMonthName();
-    expect(dataForTest).toEqual('January');
+    expect(dataForTest).toEqual('February');
   });
 
   it('get short name of month', () => {
@@ -54,10 +53,10 @@ describe('test for file months', () => {
     const dataAfterTestNumberZero = monthMethods.monthNameFromNumber(0);
     expect(dataAfterTestNumberZero).toBe(undefined);
 
-    const dataAfterTestNumberWrite = monthMethods.monthNameFromNumber(5);
-    expect(dataAfterTestNumberWrite).toEqual('May');
+    const dataAfterTestNumberWrite = monthMethods.monthNameFromNumber(9);
+    expect(dataAfterTestNumberWrite).toEqual('September');
 
-    const dataAfterTestNumberIsNotWrite = monthMethods.monthNameFromNumber(15);
+    const dataAfterTestNumberIsNotWrite = monthMethods.monthNameFromNumber(13);
     expect(dataAfterTestNumberIsNotWrite).toEqual(undefined);
   });
 
