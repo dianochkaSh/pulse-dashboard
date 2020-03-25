@@ -22,12 +22,44 @@ import * as monthMethods from './months';
 describe('test for file months', () => {
   const monthNumbers =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3"];
   const monthNumbersLong =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "1", "2", "3"];
+  const differenceOrderMonthNumbers =  ["6", "8", "4", "7", "5", "9", "10", "1", "12", "11", "2", "3"];
 
   it('get current month name', () => {
+    const testDate = new Date('2020-01-14T11:01:58.135Z');
+    jest
+      .spyOn(global, 'Date')
+      .mockImplementation(()=> testDate);
 
+    const dataForTest = monthMethods.getCurrentMonthName();
+    expect(dataForTest).toEqual('January');
+  });
 
-  //getCurrentMonthName
+  it('get short name of month', () => {
+    const dataAfterTest = monthMethods.monthNameFromNumberAbbreviated(3);
+    expect(dataAfterTest).toEqual('Mar');
 
+    const dataAfterTestZeroNumber = monthMethods.monthNameFromNumberAbbreviated(0);
+    expect(dataAfterTestZeroNumber).toBe(undefined);
+
+    const dataAfterTestBigNumber = monthMethods.monthNameFromNumberAbbreviated(15);
+    expect(dataAfterTestBigNumber).toBe(undefined);
+
+    const dataAfterTestStringNumber = monthMethods.monthNameFromNumberAbbreviated('test');
+    expect(dataAfterTestStringNumber).toBe(undefined);
+  });
+
+  it('get month name by number', () => {
+    const dataAfterTestNumberUndefined = monthMethods.monthNameFromNumber(undefined);
+    expect(dataAfterTestNumberUndefined).toBe(undefined);
+
+    const dataAfterTestNumberZero = monthMethods.monthNameFromNumber(0);
+    expect(dataAfterTestNumberZero).toBe(undefined);
+
+    const dataAfterTestNumberWrite = monthMethods.monthNameFromNumber(5);
+    expect(dataAfterTestNumberWrite).toEqual('May');
+
+    const dataAfterTestNumberIsNotWrite = monthMethods.monthNameFromNumber(15);
+    expect(dataAfterTestNumberIsNotWrite).toEqual(undefined);
   });
 
   it('month names from numbers', () => {
@@ -88,11 +120,9 @@ describe('test for file months', () => {
 
     const dataAfterLongArray = monthMethods.monthNamesFromNumbers(monthNumbersLong, true);
     expect(dataAfterLongArray).toEqual(monthLonger);
-
   });
 
   it('month names all with years from numbers', () => {
-    const dataAfterTest = monthMethods.monthNamesAllWithYearsFromNumbers(monthNumbers, true, false);
     const dataExpected = [
       "Apr '19",
       "May '19",
@@ -108,11 +138,32 @@ describe('test for file months', () => {
       "Mar '20"
     ];
 
+    const dataExpectedDifferentOrder = [
+      "Jun '19",
+      "Aug '19",
+      "Apr '19",
+      "Jul '19",
+      "May '19",
+      "Sep '19",
+      "Oct '19",
+      "Jan '20",
+      "Dec '20",
+      "Nov '20",
+      "Feb '20",
+      "Mar '20"
+    ];
+
+    const dataAfterTest = monthMethods.monthNamesAllWithYearsFromNumbers(monthNumbers, true, false);
     expect(dataAfterTest).toEqual(dataExpected);
+
+    const dataAfterTestDifferentOrderArray = monthMethods.monthNamesAllWithYearsFromNumbers(differenceOrderMonthNumbers, true, false);
+    expect(dataAfterTestDifferentOrderArray).toEqual(dataExpectedDifferentOrder);
+
+    const dataAfterTestEmptyArray = monthMethods.monthNamesAllWithYearsFromNumbers([], undefined, undefined);
+    expect(dataAfterTestEmptyArray).toEqual([]);
   });
 
   it('month names with years from numbers', () => {
-    const dataAfterTest = monthMethods.monthNamesWithYearsFromNumbers(monthNumbers, true, false);
     const dataExpected = [
       "Apr '19",
       "May",
@@ -143,8 +194,22 @@ describe('test for file months', () => {
       "Feb",
       "Mar"
       ];
+    const dataExpectedDifferentOrderArray =[
+      "Jun '19",
+      "Aug",
+      "Apr",
+      "Jul",
+      "May",
+      "Sep",
+      "Oct",
+      "Jan '20",
+      "Dec",
+      "Nov",
+      "Feb",
+      "Mar"
+    ];
 
-
+    const dataAfterTest = monthMethods.monthNamesWithYearsFromNumbers(monthNumbers, true, false);
     expect(dataAfterTest).toEqual(dataExpected);
 
     const dataAfterTestEmptyArray = monthMethods.monthNamesWithYearsFromNumbers([], undefined, undefined);
@@ -152,16 +217,20 @@ describe('test for file months', () => {
 
     const dataAfterTestLongArray = monthMethods.monthNamesWithYearsFromNumbers(monthNumbersLong, true, false);
     expect(dataAfterTestLongArray).toEqual(dataExpectedLongArray);
+
+    const dataAfterTestDifferentOrderArray = monthMethods.monthNamesWithYearsFromNumbers(differenceOrderMonthNumbers, true, false);
+    expect(dataAfterTestDifferentOrderArray).toEqual(dataExpectedDifferentOrderArray);
   });
 
   it('month names from short name', () => {
-
     const dataAfterTest = monthMethods.monthNamesFromShortName("Jan '20");
     expect(dataAfterTest).toEqual('January');
 
-    const dataAfterTestError = monthMethods.monthNamesFromShortName("April 19");
-    expect(dataAfterTestError).toEqual(undefined)
+    const dataAfterTestLongName = monthMethods.monthNamesFromShortName("April '19");
+    expect(dataAfterTestLongName).toEqual(undefined);
 
-  })
+    const dataAfterTestEmptyName = monthMethods.monthNamesFromShortName(" ");
+    expect(dataAfterTestEmptyName).toBe(undefined);
+  });
 
 });
