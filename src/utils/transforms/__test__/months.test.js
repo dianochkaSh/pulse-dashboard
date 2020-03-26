@@ -21,8 +21,8 @@ import tk from 'timekeeper';
 
 describe('test for file months', () => {
   const monthNumbers =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3"];
-  const monthNumbersLong =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "-5", "1", "2", "3"];
-  const differenceOrderMonthNumbers =  ["6", "8", "4", "7", "5", "9", "10", "1", "12", "11", "2", "3"];
+  const monthNumbersWithInvalidEntries =  ["4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "-5", "1", "2", "3"];
+  const monthNumbersOutOfOrder =  ["6", "8", "4", "7", "5", "9", "10", "1", "12", "11", "2", "3"];
 
   it('get current month name', () => {
     const testDate = new Date('2020-02-14T11:01:58.135Z');
@@ -107,7 +107,7 @@ describe('test for file months', () => {
       'Mar'
     ];
 
-    const monthNamesWithAbbreviated = monthMethods.monthNamesFromNumbers(monthNumbers, true );
+    const monthNamesWithAbbreviated = monthMethods.monthNamesFromNumbers(monthNumbers, true);
     expect(monthNamesWithAbbreviated).toEqual(expectedForAbbreviated);
 
     const monthNamesWithoutAbbreviated = monthMethods.monthNamesFromNumbers(monthNumbers, false);
@@ -116,7 +116,7 @@ describe('test for file months', () => {
     const monthNamesEmptyArray = monthMethods.monthNamesFromNumbers([], undefined);
     expect(monthNamesEmptyArray).toEqual([]);
 
-    const monthNamesWrongNumber = monthMethods.monthNamesFromNumbers(monthNumbersLong, true);
+    const monthNamesWrongNumber = monthMethods.monthNamesFromNumbers(monthNumbersWithInvalidEntries, true);
     expect(monthNamesWrongNumber).toEqual(expectedForWrongNumbers);
   });
 
@@ -167,16 +167,16 @@ describe('test for file months', () => {
     ];
     const longArray =["4", "5", "6", "7", "8", "9", "10", "11", "12", "1", "2", "3", "4"];
 
-    const monthNamesWithYears = monthMethods.monthNamesAllWithYearsFromNumbers(monthNumbers, true, false);
+    const monthNamesWithYears = monthMethods.monthNamesAllWithYearsFromNumbers(monthNumbers, true);
     expect(monthNamesWithYears).toEqual(dataExpected);
 
-    const monthNamesWithYearsDifferentOrderArray = monthMethods.monthNamesAllWithYearsFromNumbers(differenceOrderMonthNumbers, true, false);
+    const monthNamesWithYearsDifferentOrderArray = monthMethods.monthNamesAllWithYearsFromNumbers(monthNumbersOutOfOrder, true);
     expect(monthNamesWithYearsDifferentOrderArray).toEqual(expectedForDifferentOrder);
 
-    const monthNamesWithYearsEmptyArray = monthMethods.monthNamesAllWithYearsFromNumbers([], undefined, undefined);
+    const monthNamesWithYearsEmptyArray = monthMethods.monthNamesAllWithYearsFromNumbers([], undefined);
     expect(monthNamesWithYearsEmptyArray).toEqual([]);
 
-    const monthNamesWithYearsSmallArray = monthMethods.monthNamesAllWithYearsFromNumbers(longArray, true, false);
+    const monthNamesWithYearsSmallArray = monthMethods.monthNamesAllWithYearsFromNumbers(longArray, true);
     expect(monthNamesWithYearsSmallArray).toEqual(expectedForLongArray);
   });
 
@@ -226,16 +226,16 @@ describe('test for file months', () => {
       "Mar"
     ];
 
-    const monthNamesWithYears = monthMethods.monthNamesWithYearsFromNumbers(monthNumbers, true, false);
+    const monthNamesWithYears = monthMethods.monthNamesWithYearsFromNumbers(monthNumbers, true);
     expect(monthNamesWithYears).toEqual(dataExpected);
 
-    const monthNamesWithYearsEmptyArray = monthMethods.monthNamesWithYearsFromNumbers([], undefined, undefined);
+    const monthNamesWithYearsEmptyArray = monthMethods.monthNamesWithYearsFromNumbers([], undefined);
     expect(monthNamesWithYearsEmptyArray).toEqual([]);
 
-    const monthNamesWithYearsLongArray = monthMethods.monthNamesWithYearsFromNumbers(monthNumbersLong, true, false);
+    const monthNamesWithYearsLongArray = monthMethods.monthNamesWithYearsFromNumbers(monthNumbersWithInvalidEntries, true);
     expect(monthNamesWithYearsLongArray).toEqual(dataExpectedLongArray);
 
-    const monthNamesWithYearsDifferentOrderArray = monthMethods.monthNamesWithYearsFromNumbers(differenceOrderMonthNumbers, true, false);
+    const monthNamesWithYearsDifferentOrderArray = monthMethods.monthNamesWithYearsFromNumbers(monthNumbersOutOfOrder, true);
     expect(monthNamesWithYearsDifferentOrderArray).toEqual(dataExpectedDifferentOrderArray);
   });
 
