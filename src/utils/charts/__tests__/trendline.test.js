@@ -89,7 +89,11 @@ describe('test for file trendline', () => {
       yLabel: 'Revocation count: '
     };
     const data = {
-      datasets:{ test: {label: 'test'}}
+      datasets: {
+        test: {
+          label: 'test'
+        }
+      }
     };
     const units = 45;
 
@@ -98,12 +102,11 @@ describe('test for file trendline', () => {
       yLabel: 'Revocation count: '
     };
     const dataForTrendline = {
-      datasets:{ trendline: {label: 'trendline'}}
-    };
-
-    const tooltipItemEmptyYLabel = {
-      datasetIndex: 'test',
-      yLabel: ' '
+      datasets: {
+        trendline: {
+          label: 'trendline'
+        }
+      }
     };
 
     const tooltip = trendlineMethods.getTooltipWithoutTrendline(tooltipItem, data, units);
@@ -112,8 +115,8 @@ describe('test for file trendline', () => {
     const tooltipForTrendline = trendlineMethods.getTooltipWithoutTrendline(tooltipItemTrendline, dataForTrendline, units);
     expect(tooltipForTrendline).toBe('');
 
-    const tooltipEmptyYLabel =  trendlineMethods.getTooltipWithoutTrendline(tooltipItemEmptyYLabel, data, undefined);
-    expect(tooltipEmptyYLabel).toBe(' ');
+    const tooltipEmptyYLabel =  trendlineMethods.getTooltipWithoutTrendline(tooltipItem, data, undefined);
+    expect(tooltipEmptyYLabel).toBe('Revocation count: ');
   });
 
   it('trendline slope', () => {
@@ -159,7 +162,7 @@ describe('test for file trendline', () => {
   });
 
   it('trendline data', () => {
-    const expectedDate = [
+    const expectedData = [
       -972.1228571428562,
       -225.47190476190406,
       521.1790476190481,
@@ -167,16 +170,16 @@ describe('test for file trendline', () => {
       2014.4809523809524,
       2761.1319047619045
     ];
-    const expectedIncorrectDate = [ NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN ];
+    const expectedIncorrectData = [ NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN ];
 
     const trendlineData = trendlineMethods.trendlineData(dataPoints);
-    expect(trendlineData).toEqual(expectedDate);
+    expect(trendlineData).toEqual(expectedData);
 
     const trendlineErrorData = trendlineMethods.trendlineData([]);
     expect(trendlineErrorData).toEqual([]);
 
     const trendlineIncorrectDate = trendlineMethods.trendlineData(dataWithInvalidPoints);
-    expect(trendlineIncorrectDate).toEqual(expectedIncorrectDate);
+    expect(trendlineIncorrectDate).toEqual(expectedIncorrectData);
   });
 
 });
