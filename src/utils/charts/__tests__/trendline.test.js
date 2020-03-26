@@ -21,33 +21,14 @@ import * as trendlineMethods from '../trendline';
 describe('test for file trendline', () => {
   const dataPoints = [
     "620.00",
-    "967.00",
-    "367.00",
-    "986.00",
-    "809.00",
-    "473.00",
-    "903.00",
-    "413.00",
-    "534.00",
-    "413.00",
-    "349.00",
-    "271.00"
-  ];
-  const dataDifferentPoints  = [
-    "-1.56",
+    "-967.00",
+    "-1923.56",
     "-0.19",
-    "-1.88",
-    "1.24",
-    "-1.28",
-    "0.84",
-    "0.89",
-    "-1.64",
-    "0.90",
-    "-1.01",
-    "1.93",
-    "-0.06"
+    "9876.84",
+    "0.89"
   ];
-  const dataIncorrectPoint =[
+
+  const dataWithInvalidPoints =[
     "620.00",
     "967.00",
     "367.00",
@@ -75,18 +56,12 @@ describe('test for file trendline', () => {
       borderWidth: 1.5,
       lineTension: 0,
       data:
-        [ 824.7179487179487,
-          785.9455128205128,
-          747.1730769230769,
-          708.400641025641,
-          669.6282051282051,
-          630.8557692307692,
-          592.0833333333333,
-          553.3108974358975,
-          514.5384615384614,
-          475.7660256410256,
-          436.99358974358967,
-          398.22115384615375
+        [ -972.1228571428562,
+          -225.47190476190406,
+          521.1790476190481,
+          1267.8300000000002,
+          2014.4809523809524,
+          2761.1319047619045
         ]
     };
 
@@ -127,25 +102,16 @@ describe('test for file trendline', () => {
       data: []
     };
     const expectedData = [
-      824.7179487179487,
-      785.9455128205128,
-      747.1730769230769,
-      708.400641025641,
-      669.6282051282051,
-      630.8557692307692,
-      592.0833333333333,
-      553.3108974358975,
-      514.5384615384614,
-      475.7660256410256,
-      436.99358974358967,
-      398.22115384615375
+      -972.1228571428562,
+      -225.47190476190406,
+      521.1790476190481,
+      1267.8300000000002,
+      2014.4809523809524,
+      2761.1319047619045
     ];
 
     const dataset = trendlineMethods.generateTrendlineDataset(dataPoints, lineColor);
     expect(dataset).toEqual(expectedDataset);
-
-    const datasetWithDifferentPoints = trendlineMethods.generateTrendlineDataset(dataDifferentPoints, lineColor);
-    expect(datasetWithDifferentPoints).toEqual(expectedDatasetDifferentPoints);
 
     const datasetEmptyPoint = trendlineMethods.generateTrendlineDataset([], '');
     expect(datasetEmptyPoint).toEqual(expectedDatasetEmptyPoints);
@@ -211,7 +177,7 @@ describe('test for file trendline', () => {
       502.2435897435898,
       471.92948717948724
     ];
-    const terndlineInvalidValue = [
+    const trendlineWithInvalidValues = [
       205.3846157846154,
       275.0705128205128,
       744.7564102564103,
@@ -231,7 +197,7 @@ describe('test for file trendline', () => {
     const trendlineTestEmptyArray = trendlineMethods.trendlineSlope([]);
     expect(trendlineTestEmptyArray).toBe(NaN);
 
-    const trendlineTestInvalidEntries = trendlineMethods.trendlineSlope(terndlineInvalidValue);
+    const trendlineTestInvalidEntries = trendlineMethods.trendlineSlope(trendlineWithInvalidValues);
     expect(trendlineTestInvalidEntries).toBe(22.212072616239322);
 
     const trendlineTestUndefinedEntries = trendlineMethods.trendlineSlope(undefined);
@@ -240,18 +206,12 @@ describe('test for file trendline', () => {
 
   it('trendline data', () => {
     const expectedDate = [
-      824.7179487179487,
-      785.9455128205128,
-      747.1730769230769,
-      708.400641025641,
-      669.6282051282051,
-      630.8557692307692,
-      592.0833333333333,
-      553.3108974358975,
-      514.5384615384614,
-      475.7660256410256,
-      436.99358974358967,
-      398.22115384615375
+      -972.1228571428562,
+      -225.47190476190406,
+      521.1790476190481,
+      1267.8300000000002,
+      2014.4809523809524,
+      2761.1319047619045
     ];
     const expectedIncorrectDate = [ NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN, NaN ];
 
@@ -261,7 +221,7 @@ describe('test for file trendline', () => {
     const trendlineErrorData = trendlineMethods.trendlineData([]);
     expect(trendlineErrorData).toEqual([]);
 
-    const trendlineIncorrectDate = trendlineMethods.trendlineData(dataIncorrectPoint);
+    const trendlineIncorrectDate = trendlineMethods.trendlineData(dataWithInvalidPoints);
     expect(trendlineIncorrectDate).toEqual(expectedIncorrectDate);
   });
 
