@@ -45,50 +45,7 @@ describe('test for file trendline', () => {
 
   it('generate trendline dataset', () => {
     const lineColor = 'rgba(63, 77, 98, .7)';
-    const expectedDataset = {
-      label: 'trendline',
-      backgroundColor: 'rgba(63, 77, 98, .7)',
-      borderColor: 'rgba(63, 77, 98, .7)',
-      fill: false,
-      pointRadius: 0,
-      hitRadius: 0,
-      hoverRadius: 0,
-      borderWidth: 1.5,
-      lineTension: 0,
-      data:
-        [ -972.1228571428562,
-          -225.47190476190406,
-          521.1790476190481,
-          1267.8300000000002,
-          2014.4809523809524,
-          2761.1319047619045
-        ]
-    };
 
-    const expectedDatasetDifferentPoints = {
-      label: 'trendline',
-      backgroundColor: 'rgba(63, 77, 98, .7)',
-      borderColor: 'rgba(63, 77, 98, .7)',
-      fill: false,
-      pointRadius: 0,
-      hitRadius: 0,
-      hoverRadius: 0,
-      borderWidth: 1.5,
-      lineTension: 0,
-      data:
-        [ -0.9005128205128208,
-          -0.7757051282051284,
-          -0.6508974358974361,
-          -0.5260897435897437,
-          -0.40128205128205136,
-          -0.276474358974359,
-          -0.15166666666666662,
-          -0.02685897435897433,
-          0.09794871794871807,
-          0.22275641025641035,
-          0.34756410256410275,
-          0.47237179487179515 ]
-    };
     const expectedDatasetEmptyPoints =  {
       label: 'trendline',
       backgroundColor: '',
@@ -109,9 +66,6 @@ describe('test for file trendline', () => {
       2014.4809523809524,
       2761.1319047619045
     ];
-
-    const dataset = trendlineMethods.generateTrendlineDataset(dataPoints, lineColor);
-    expect(dataset).toEqual(expectedDataset);
 
     const datasetEmptyPoint = trendlineMethods.generateTrendlineDataset([], '');
     expect(datasetEmptyPoint).toEqual(expectedDatasetEmptyPoints);
