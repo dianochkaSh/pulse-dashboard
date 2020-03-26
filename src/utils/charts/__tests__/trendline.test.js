@@ -178,8 +178,8 @@ describe('test for file trendline', () => {
     const trendlineErrorData = trendlineMethods.trendlineData([]);
     expect(trendlineErrorData).toEqual([]);
 
-    const trendlineIncorrectDate = trendlineMethods.trendlineData(dataWithInvalidPoints);
-    expect(trendlineIncorrectDate).toEqual(expectedIncorrectData);
+    const trendlineIncorrectData = trendlineMethods.trendlineData(dataWithInvalidPoints);
+    expect(trendlineIncorrectData).toEqual(expectedIncorrectData);
   });
 
 });
