@@ -23,11 +23,14 @@ describe('test for tooltips', () => {
     {
       index: 'Referrals',
       datasetIndex: 0
+    }, {
+      index: 'Supervision',
+      datasetIndex: 0
     }
   ];
 
   const data = {
-    labels: { Referrals: 'test'},
+    labels: { Referrals: 'test' },
     datasets: [
       {
         label: 'man',
@@ -39,16 +42,35 @@ describe('test for tooltips', () => {
   };
 
   it('tooltip for count chart', () => {
-    const firstDataset = [478, 0, 107, 0, 42, 52, 609];
+    const firstDataset = { Referrals: 456 };
     const firstPrefix = 'Referral';
-    const secondDataset = [301, 0, 71, 152, 31, 55, 559];
+    const secondDataset = { Supervision: 301 };
     const secondPrefix = 'Supervision';
 
     const dataEmpty = {
       labels: { Referrals: ''},
+      datasets: [ ]
+    };
+    const dataForFirstDataset = {
+      labels: { Referrals: 'test' },
       datasets: [
         {
-          label: '',
+          label: 'Referral',
+          data: {
+            Referrals: 20.560109289617486
+          },
+        }
+      ]
+    };
+
+    const dataForSecondDataset = {
+      labels: { Supervision: 'test' },
+      datasets: [
+        {
+          label: 'Supervision',
+          data: {
+            Referrals: 20.560109289617486
+          },
         }
       ]
     };
@@ -57,11 +79,17 @@ describe('test for tooltips', () => {
     const tooltipTitle = callback.title(tooltipItem, data);
     expect(tooltipTitle).toBe('test');
 
+    const tooltipTitleForFirstDataset = callback.label(tooltipItem[0], dataForFirstDataset);
+    expect(tooltipTitleForFirstDataset).toBe('Referral: 456');
+
+    const tooltipTitleForSecondDataset = callback.label(tooltipItem[1], dataForSecondDataset);
+    expect(tooltipTitleForSecondDataset).toBe('Supervision: 301');
+
     const tooltipLabel = callback.label(tooltipItem[0], data);
     expect(tooltipLabel).toBe('man: 0');
 
     const tooltipEmptyTitle = callback.title(tooltipItem, dataEmpty);
-    expect(tooltipEmptyTitle).toBe('');
+    expect(tooltipEmptyTitle).toBe(undefined);
 
     const tooltipEmptyLabel = callback.label(tooltipItem[0], dataEmpty);
     expect(tooltipEmptyLabel).toEqual(': 0');
