@@ -127,6 +127,7 @@ describe('test for file toggles', () => {
       max: undefined,
       stepSize: undefined
     };
+
     const expectedEmptyToggleTicks = { min: undefined, max: undefined, stepSize: undefined };
 
     const toggleTicksTestDisplayTrue = toggleMethods.toggleYAxisTicksBasedOnGoal(true, 20, 80, 10, otherOptions);
@@ -362,9 +363,9 @@ describe('test for file toggles', () => {
     expect(tooltipTest).toBe('Revocation rate: 10.56%');
   });
 
-  it('update tooltip for metric type with counts', () => {
-    const tooltipTest = toggleMethods.updateTooltipForMetricType('rates', tooltipItemCount, dataForRates);
-    expect(tooltipTest).toBe('Referral rate: 49%');
+  it('update tooltip for metric type', () => {
+    const tooltipTest = toggleMethods.updateTooltipForMetricType('rates', tooltipItemRate, dataForRates);
+    expect(tooltipTest).toBe('Referral rate: 10.56%');
 
     const tooltipTestCounts = toggleMethods.updateTooltipForMetricType('counts', tooltipItemCount, dataCount);
     expect(tooltipTestCounts).toBe('Referral count: 49');
