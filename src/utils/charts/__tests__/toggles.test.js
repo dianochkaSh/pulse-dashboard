@@ -19,38 +19,7 @@ import * as toggleMethods from '../toggles';
 import tk from 'timekeeper';
 
 describe('test for file toggles', () => {
-  const dataset = [
-    {
-      supervision_type: "PAROLE",
-      district: "ALL",
-      state_code: "US_DEMO",
-      metric_period_months: "1",
-      new_admissions: "32",
-      technicals: "20",
-      non_technicals: "30",
-      unknown_revocations: "12"
-    },
-    {
-      supervision_type: "PROBATION",
-      district: "ALL",
-      state_code: "US_DEMO",
-      metric_period_months: "3",
-      new_admissions: "85",
-      technicals: "64",
-      non_technicals: "55",
-      unknown_revocations: "22"
-    },
-    {
-      supervision_type: "PAROLE",
-      district: "No",
-      state_code: "US_DEMO",
-      metric_period_months: "6",
-      new_admissions: "141",
-      technicals: "109",
-      non_technicals: "91",
-      unknown_revocations: "37"
-    }
-  ];
+
   const tooltipMetric = {
     xLabel: 'High',
     yLabel: 10.56,
@@ -61,6 +30,7 @@ describe('test for file toggles', () => {
     x: 1088.744296760559,
     y: 249.0246857142857
   };
+
   const dataMetric = {
     labels: ['Not Assessed', 'Low', 'Moderate', 'High', 'Very High'],
     datasets: [
@@ -73,9 +43,10 @@ describe('test for file toggles', () => {
       }
     ]
   };
+
   const numbers = [56, 26, 36, 19, 2];
   const denominators =  [857, 294, 267, 180, 3];
-  const metricType = 'rates';
+
   const tooltipItemCount = {
     xLabel: "February",
     yLabel: 49,
@@ -86,6 +57,7 @@ describe('test for file toggles', () => {
     x: 633.9642396550939,
     y: 131.76141524482514
   };
+
   const dataCount = {
     labels: ["April '19", "May", "June", "July", "August", "September", "October", "November", "December", "January '20", "February", "March"],
     datasets: [
@@ -103,12 +75,28 @@ describe('test for file toggles', () => {
     ]
   };
 
+  const dataForRates = {
+    labels: ["April '19", "May", "June", "July", "August", "September", "October", "November", "December", "January '20", "February", "March"],
+    datasets: [
+      {
+        label: "Referral rate",
+        backgroundColor: "#9e9e9e",
+        borderColor: "#9e9e9e",
+        pointBackgroundColor: "#9e9e9e",
+        pointHoverBackgroundColor: "#9e9e9e",
+        pointHoverBorderColor: "#9e9e9e",
+        fill: false,
+        borderWidth: 2,
+        data: [80, 53, 53, 71, 43, 29, 17, 25, 32, 72, 49, 90]
+      }
+    ]
+  };
+
 
   it('toggle label', () => {
     const labelsByToggle = { counts: 'Referral count', rates: 'Referral rate' };
-    const toggledValue = 'counts';
 
-    const toggleTest = toggleMethods.toggleLabel(labelsByToggle, toggledValue);
+    const toggleTest = toggleMethods.toggleLabel(labelsByToggle, 'counts');
     expect(toggleTest).toBe('Referral count');
 
     const toggleEmptyTest = toggleMethods.toggleLabel({}, '');
@@ -116,53 +104,35 @@ describe('test for file toggles', () => {
   });
 
   it('toggle Y axis ticks for', () => {
-    const desiredMetricType = 'counts';
-    const currentMetricType = 'counts';
-    const minValue = 0;
-    const maxValue = 110;
-    const stepSize = 10;
-
-    const desiredMetricTypeIncorrect = 'counts';
-    const currentMetricTypeIncorrect = 'rates';
-    const minValueIncorrect = 0;
-    const maxValueIncorrect = 200;
-    const stepSizeIncorrect = 50;
-
-
     const expectedToggleTicks = { min: 0, max: 110, stepSize: 10 };
     const expectedEmptyToggleTicks = { min: undefined, max: undefined, stepSize: undefined };
 
-    const toggleTicksTest = toggleMethods.toggleYAxisTicksFor(desiredMetricType, currentMetricType, minValue, maxValue, stepSize);
+    const toggleTicksTest = toggleMethods.toggleYAxisTicksFor('counts', 'counts', 0, 110, 10);
     expect(toggleTicksTest).toEqual(expectedToggleTicks);
 
     const toggleTicksEmptyTest = toggleMethods.toggleYAxisTicksFor('', '', undefined, undefined, undefined);
     expect(toggleTicksEmptyTest).toEqual(expectedEmptyToggleTicks);
 
-    const toggleTicksNotEqualTest = toggleMethods.toggleYAxisTicksFor(desiredMetricTypeIncorrect, currentMetricTypeIncorrect, minValueIncorrect, maxValueIncorrect, stepSizeIncorrect);
+    const toggleTicksNotEqualTest = toggleMethods.toggleYAxisTicksFor('counts', 'rates', 0, 110, 10);
     expect(toggleTicksNotEqualTest).toEqual(expectedEmptyToggleTicks);
   });
 
   it('toggle Y axis ticks based on goal', () => {
-    const canDisplayChartGoalTrue = true;
-    const canDisplayChartGoalFalse = false;
-    const minValue = 20;
-    const maxValue = 80;
-    const stepSize = 10;
-    const otherOptions = { fontColor: "#757575" };
+    const otherOptions = {fontColor: '#757575'};
 
-    const expectedToggleTicksDisplayTrue = { '0': undefined, min: 20, max: 80, stepSize: 10 };
+    const expectedToggleTicksDisplayTrue = {'fontColor': '#757575', min: 20, max: 80, stepSize: 10};
     const expectedToggleTicksDisplayFalse = {
-      '0': undefined,
+      'fontColor': '#757575',
       min: undefined,
       max: undefined,
       stepSize: undefined
     };
     const expectedEmptyToggleTicks = { min: undefined, max: undefined, stepSize: undefined };
 
-    const toggleTicksTestDisplayTrue = toggleMethods.toggleYAxisTicksBasedOnGoal(canDisplayChartGoalTrue, minValue, maxValue, stepSize, otherOptions);
+    const toggleTicksTestDisplayTrue = toggleMethods.toggleYAxisTicksBasedOnGoal(true, 20, 80, 10, otherOptions);
     expect(toggleTicksTestDisplayTrue).toEqual(expectedToggleTicksDisplayTrue);
 
-    const toggleTicksTestDisplayFalse = toggleMethods.toggleYAxisTicksBasedOnGoal(canDisplayChartGoalFalse, minValue, maxValue, stepSize, otherOptions);
+    const toggleTicksTestDisplayFalse = toggleMethods.toggleYAxisTicksBasedOnGoal(false, 20, 80, 10, otherOptions);
     expect(toggleTicksTestDisplayFalse).toEqual(expectedToggleTicksDisplayFalse);
 
     const toggleTicksEmptyTestParams = toggleMethods.toggleYAxisTicksBasedOnGoal(undefined, 0, 0, 0, {});
@@ -170,57 +140,41 @@ describe('test for file toggles', () => {
   });
 
   it('toggle YAxis ticks additional options', () => {
-    const desiredMetricType = 'rates';
-    const currentMetricType = 'rates';
-    const minValue = -10;
-    const maxValue = 120;
-    const stepSize = 10;
-    const otherOptions = { fontColor: "#757575" };
-    const expectedToggleTicks = { 0: undefined, min: -10, max: 120, stepSize: 10 };
+    const otherOptions = { fontColor: '#757575' };
+
+    const expectedToggleTicks = { 'fontColor': '#757575', min: -10, max: 120, stepSize: 10 };
     const expectedIncorrectToggleTicks = {
-      '0': undefined,
+      'fontColor': '#757575',
       min: undefined,
       max: undefined,
       stepSize: undefined
     };
-    const desiredMetricDifferentType = 'rates';
-    const currentMetricDifferentType = 'counts';
 
-    const toggleTicksTest = toggleMethods.toggleYAxisTicksAdditionalOptions(desiredMetricType, currentMetricType, minValue, maxValue, stepSize, otherOptions);
+    const toggleTicksTest = toggleMethods.toggleYAxisTicksAdditionalOptions('rates', 'rates', -10, 120, 10, otherOptions);
     expect(toggleTicksTest).toEqual(expectedToggleTicks);
 
-    const toggleTicksTesDifferentType = toggleMethods.toggleYAxisTicksAdditionalOptions(desiredMetricDifferentType, currentMetricDifferentType, minValue, maxValue, stepSize, otherOptions);
-    expect(toggleTicksTesDifferentType).toEqual(expectedIncorrectToggleTicks);
-
+    const toggleTicksTestDifferentType = toggleMethods.toggleYAxisTicksAdditionalOptions('rates', 'counts', -10, 120, 10, otherOptions);
+    expect(toggleTicksTestDifferentType).toEqual(expectedIncorrectToggleTicks);
   });
 
   it('toggle YAxis ticks stacked rate basic count', () => {
-    const metricType = 'counts';
-    const maxCount  = 200;
-
-    const metricDifferentType = 'rates';
-
     const expectedToggleTicks = { min: 0, max: 200, stepSize: undefined };
     const expectedToggleTicksForEmptyParameters = { min: 0, max: undefined, stepSize: undefined };
-    const expectedToggleTicksForIncorrectParameters =  { min: 0, max: 'metric', stepSize: undefined };
 
     const expectedDifferentToggleTicks = { min: 0, max: 100, stepSize: 20 };
 
-    const toggleTicks = toggleMethods.toggleYAxisTicksStackedRateBasicCount(metricType, maxCount);
+    const toggleTicks = toggleMethods.toggleYAxisTicksStackedRateBasicCount('counts', 200);
     expect(toggleTicks).toEqual(expectedToggleTicks);
 
-    const toggleDifferentTicks = toggleMethods.toggleYAxisTicksStackedRateBasicCount(metricDifferentType, maxCount);
+    const toggleDifferentTicks = toggleMethods.toggleYAxisTicksStackedRateBasicCount('rates', 200);
     expect(toggleDifferentTicks).toEqual(expectedDifferentToggleTicks);
 
     const toggleTicksEmptyParameters = toggleMethods.toggleYAxisTicksStackedRateBasicCount(undefined, undefined);
     expect(toggleTicksEmptyParameters).toEqual(expectedToggleTicksForEmptyParameters);
-
   });
 
   it('get month count from metric period months toggle', () => {
-    const toggleValue = '12';
-
-    const monthCount = toggleMethods.getMonthCountFromMetricPeriodMonthsToggle(toggleValue);
+    const monthCount = toggleMethods.getMonthCountFromMetricPeriodMonthsToggle('12');
     expect(monthCount).toBe(12);
 
     const monthCountIncorrectNumber = toggleMethods.getMonthCountFromMetricPeriodMonthsToggle('toggle number');
@@ -245,7 +199,6 @@ describe('test for file toggles', () => {
   });
 
   it('get trailing label from metric period months toggle', () => {
-
     const periodMonth = toggleMethods.getTrailingLabelFromMetricPeriodMonthsToggle(5);
     expect(periodMonth).toBe('Last 0.4166666666666667 years');
 
@@ -258,7 +211,16 @@ describe('test for file toggles', () => {
     const periodCurrentMonth = toggleMethods.getTrailingLabelFromMetricPeriodMonthsToggle('1');
     expect(periodCurrentMonth).toBe('Current month');
 
+    const period3Month = toggleMethods.getTrailingLabelFromMetricPeriodMonthsToggle('3');
+    expect(period3Month).toBe('Last 3 months');
+
+    const period6Month = toggleMethods.getTrailingLabelFromMetricPeriodMonthsToggle('6');
+    expect(period6Month).toBe('Last 6 months');
+
+    const period36Month = toggleMethods.getTrailingLabelFromMetricPeriodMonthsToggle('36');
+    expect(period36Month).toBe('Last 3 years');
   });
+
   it('standard tooltip for count metric', () => {
     const tooltip = {
       xLabel: 'May',
@@ -270,6 +232,7 @@ describe('test for file toggles', () => {
       x: 116.05289450558749,
       y: 211.504
     };
+
     const data = {
       labels: ["Apr '19", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan '20", "Feb", "Mar"],
       datasets: [
@@ -289,6 +252,7 @@ describe('test for file toggles', () => {
         }
       ]
     };
+
     const dataEmptyLabel = {
       labels: ["Apr '19", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan '20", "Feb", "Mar"],
       datasets: [
@@ -308,7 +272,8 @@ describe('test for file toggles', () => {
         }
       ]
     };
-    const tooltipWithoutValue = {
+
+    const tooltipYLabel = {
       xLabel: 'May',
       yLabel: 204,
       label: 'May',
@@ -321,8 +286,8 @@ describe('test for file toggles', () => {
     const tooltipMetric = toggleMethods.standardTooltipForCountMetric(tooltip, data);
     expect(tooltipMetric).toBe('Successful completions: 203');
 
-    const tooltipMetricWithOutValue = toggleMethods.standardTooltipForCountMetric(tooltipWithoutValue, data);
-    expect(tooltipMetricWithOutValue).toBe('Successful completions: 204');
+    const tooltipMetricYLabel = toggleMethods.standardTooltipForCountMetric(tooltipYLabel, data);
+    expect(tooltipMetricYLabel).toBe('Successful completions: 204');
 
     const tooltipEmptyMetric = toggleMethods.standardTooltipForCountMetric(tooltip, dataEmptyLabel);
     expect(tooltipEmptyMetric).toBe('203');
@@ -339,6 +304,7 @@ describe('test for file toggles', () => {
       x: 369.2573239326477,
       y: 203.19093333333333
     };
+
     const data = {
       labels: ["Jan '20", "Feb", "Mar"],
       datasets: [
@@ -384,8 +350,8 @@ describe('test for file toggles', () => {
 
     const tooltipEmptyMetric = toggleMethods.standardTooltipForRateMetric(tooltipItem, dataEmptyLabel);
     expect(tooltipEmptyMetric).toBe(': 49.37%');
-
   });
+
   it('tooltip for rate metric with counts', () => {
     const tooltipWithCount = toggleMethods.tooltipForRateMetricWithCounts(tooltipMetric, dataMetric, numbers, denominators);
     expect(tooltipWithCount).toBe("Revocation rate: 10.56% (19/180)");
@@ -397,13 +363,19 @@ describe('test for file toggles', () => {
   });
 
   it('update tooltip for metric type with counts', () => {
-    const tooltipTest = toggleMethods.updateTooltipForMetricType(metricType, tooltipItemCount, dataCount);
-    expect(tooltipTest).toBe('Referral count: 49%');
+    const tooltipTest = toggleMethods.updateTooltipForMetricType('rates', tooltipItemCount, dataForRates);
+    expect(tooltipTest).toBe('Referral rate: 49%');
+
+    const tooltipTestCounts = toggleMethods.updateTooltipForMetricType('counts', tooltipItemCount, dataCount);
+    expect(tooltipTestCounts).toBe('Referral count: 49');
   });
 
   it('update tooltip for metric type with counts', () => {
-    const tooltipTest = toggleMethods.updateTooltipForMetricTypeWithCounts( metricType, tooltipItemCount, dataCount, numbers, denominators)
-    expect(tooltipTest).toBe('Referral count: 49%');
+    const tooltipTestCount = toggleMethods.updateTooltipForMetricTypeWithCounts('count', tooltipItemCount, dataCount, numbers, denominators);
+    expect(tooltipTestCount).toBe('Referral count: 49');
+
+    const tooltipTestForRate = toggleMethods.updateTooltipForMetricTypeWithCounts('rates', tooltipItemCount, dataForRates, numbers, denominators);
+    expect(tooltipTestForRate).toBe('Referral rate: 49%');
   });
 
   it('filter dataset by metric period months', () => {
@@ -428,6 +400,7 @@ describe('test for file toggles', () => {
         unknown_revocations: '26',
       }
     ];
+
     const expectedFilterDataset =  [
       {
         supervision_type: 'ALL',
@@ -453,6 +426,39 @@ describe('test for file toggles', () => {
 
 
   it('filter dataset by supervision type', () => {
+    const dataset = [
+      {
+        supervision_type: "PAROLE",
+        district: "ALL",
+        state_code: "US_DEMO",
+        metric_period_months: "1",
+        new_admissions: "32",
+        technicals: "20",
+        non_technicals: "30",
+        unknown_revocations: "12"
+      },
+      {
+        supervision_type: "PROBATION",
+        district: "ALL",
+        state_code: "US_DEMO",
+        metric_period_months: "3",
+        new_admissions: "85",
+        technicals: "64",
+        non_technicals: "55",
+        unknown_revocations: "22"
+      },
+      {
+        supervision_type: "PAROLE",
+        district: "No",
+        state_code: "US_DEMO",
+        metric_period_months: "6",
+        new_admissions: "141",
+        technicals: "109",
+        non_technicals: "91",
+        unknown_revocations: "37"
+      }
+    ];
+
     const expectedFilterDataset = [
       {
         supervision_type: 'PAROLE',
@@ -487,6 +493,7 @@ describe('test for file toggles', () => {
       label: '30',
       metricType: 'counts'
     };
+
     const currentToggleStates = {
       metricType: "counts",
       metricPeriodMonths: "12",
@@ -494,15 +501,38 @@ describe('test for file toggles', () => {
       district: "all",
       geoView: false
     };
+
+    const currentToggleStatesGeoViewTrue = {
+      metricType: "counts",
+      metricPeriodMonths: "12",
+      supervisionType: "all",
+      district: "all",
+      geoView: true
+    };
+
     const goalTest = toggleMethods.canDisplayGoal(goal, currentToggleStates);
     expect(goalTest).toBeTrue();
+
+    const goalFalseTest = toggleMethods.canDisplayGoal(goal, currentToggleStatesGeoViewTrue);
+    expect(goalFalseTest).toBe(false);
   });
 
   it('center single month dataset if necessary', () => {
     const dataValues = ["26", "49", "33", "41", "39", "23", "31", "46", "40", "94", "61", "43"];
     const labels = ["April '19", "May", "June", "July", "August", "September", "October", "November", "December", "January '20", "February", "March"];
-    const monthTest = toggleMethods.centerSingleMonthDatasetIfNecessary(dataValues, labels);
-    expect(monthTest).toBe(undefined);
+
+    toggleMethods.centerSingleMonthDatasetIfNecessary(dataValues, labels);
+    expect(dataValues).toBe(dataValues);
+    expect(labels).toBe(labels);
+
+    const dataOneValue = ["26"];
+    const oneLabel = ["April '19"];
+    const expectedDataOneValue = [null, '26', null];
+    const expectedOneLabel =  [ "", "April '19", "" ];
+
+    toggleMethods.centerSingleMonthDatasetIfNecessary(dataOneValue, oneLabel);
+    expect(dataOneValue).toEqual(expectedDataOneValue);
+    expect(oneLabel).toEqual(expectedOneLabel);
   });
 
 });
