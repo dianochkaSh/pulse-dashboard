@@ -21,34 +21,53 @@ import * as tooltipsMethods from '../tooltips';
 describe('test for tooltips', () => {
   const tooltipItem = [
     {
-      index: 'Referrals',
-      datasetIndex: 0
+      xLabel: "Black",
+      yLabel: 107,
+      label: "Black",
+      value: "107",
+      index: 2,
+      datasetIndex: 0,
+      x: 255.5001397650583,
+      y: 185.55155917203672
     }, {
-      index: 'Supervision',
-      datasetIndex: 0
+      xLabel: "Hispanic",
+      yLabel: 152,
+      label: "Hispanic",
+      value: "152",
+      index: 3,
+      datasetIndex: 1,
+      x: 375.09584281376425,
+      y: 171.9262300611739
     }
   ];
 
   const data = {
-    labels: { Referrals: 'test' },
+    labels: ['American Indian Alaskan Native', 'Asian', 'Black', 'Hispanic', 'Native Hawaiian Pacific Islander', 'Other'],
     datasets: [
       {
-        label: 'man',
-        data: {
-          Referrals: 20.560109289617486
-        },
+        label: "Referrals",
+        backgroundColor: "#809AE5",
+        hoverBackgroundColor: "#809AE5",
+        yAxisID: "y-axis-left",
+        data: [478, 0, 107, 0, 42, 52, 609]
+      }, {
+        label: "Supervision Population",
+        backgroundColor: "#3F4D62",
+        hoverBackgroundColor: "#3F4D62",
+        yAxisID: "y-axis-left",
+        data: [301, 0, 71, 152, 31, 55, 559]
       }
     ]
   };
 
   it('tooltip for count chart', () => {
-    const firstDataset = { Referrals: 456 };
+    const firstDataset = [456, 789, 56, 789];
     const firstPrefix = 'Referral';
-    const secondDataset = { Supervision: 301 };
+    const secondDataset = [23, 50, 200, 89];
     const secondPrefix = 'Supervision';
 
     const dataEmpty = {
-      labels: { Referrals: ''},
+      labels: { Referrals: '' },
       datasets: [ ]
     };
     const dataForFirstDataset = {
@@ -77,16 +96,16 @@ describe('test for tooltips', () => {
 
     const callback = tooltipsMethods.tooltipForCountChart(firstDataset, firstPrefix, secondDataset, secondPrefix);
     const tooltipTitle = callback.title(tooltipItem, data);
-    expect(tooltipTitle).toBe('test');
+    expect(tooltipTitle).toBe('Black');
 
-    const tooltipTitleForFirstDataset = callback.label(tooltipItem[0], dataForFirstDataset);
-    expect(tooltipTitleForFirstDataset).toBe('Referral: 456');
+    const tooltipLabelForFirstDataset = callback.label(tooltipItem[0], dataForFirstDataset);
+    expect(tooltipLabelForFirstDataset).toBe('Referral: 56');
 
-    const tooltipTitleForSecondDataset = callback.label(tooltipItem[1], dataForSecondDataset);
-    expect(tooltipTitleForSecondDataset).toBe('Supervision: 301');
+    const tooltipLabelForSecondDataset = callback.label(tooltipItem[0], dataForSecondDataset);
+    expect(tooltipLabelForSecondDataset).toBe('Supervision: 200');
 
-    const tooltipLabel = callback.label(tooltipItem[0], data);
-    expect(tooltipLabel).toBe('man: 0');
+    const tooltipLabel = callback.label(tooltipItem[1], data);
+    expect(tooltipLabel).toBe('Supervision Population: 89');
 
     const tooltipEmptyTitle = callback.title(tooltipItem, dataEmpty);
     expect(tooltipEmptyTitle).toBe(undefined);
@@ -98,7 +117,7 @@ describe('test for tooltips', () => {
 
   it('tooltip for rate chart', () => {
     const dataWithEmptyLabel = {
-      labels: { Referrals: 'test'},
+      labels: { Referrals: 'test' },
       datasets: [
         {
           label: '',
@@ -111,15 +130,14 @@ describe('test for tooltips', () => {
 
     const callback = tooltipsMethods.tooltipForRateChart();
 
-    const tooltipTitle = callback.title(tooltipItem,data);
-    expect(tooltipTitle).toBe('man');
+    const tooltipTitle = callback.title(tooltipItem, data);
+    expect(tooltipTitle).toBe('Referrals');
 
     const labelTooltip = callback.label(tooltipItem[0], data);
-    expect(labelTooltip).toBe('20.56% of test');
+    expect(labelTooltip).toBe('107.00% of Black');
 
     const tooltipEmptyTitle = callback.title(tooltipItem, dataWithEmptyLabel);
     expect(tooltipEmptyTitle).toBe('');
-
   });
 
 });
