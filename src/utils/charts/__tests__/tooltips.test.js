@@ -34,8 +34,8 @@ describe('test for tooltips', () => {
       yLabel: 152,
       label: "Hispanic",
       value: "152",
-      index: 3,
-      datasetIndex: 1,
+      index: 4,
+      datasetIndex: 2,
       x: 375.09584281376425,
       y: 171.9262300611739
     }
@@ -52,6 +52,12 @@ describe('test for tooltips', () => {
         data: [478, 0, 107, 0, 42, 52, 609]
       }, {
         label: "Supervision Population",
+        backgroundColor: "#3F4D62",
+        hoverBackgroundColor: "#3F4D62",
+        yAxisID: "y-axis-left",
+        data: [301, 0, 71, 152, 31, 55, 559]
+      }, {
+        label: "Population",
         backgroundColor: "#3F4D62",
         hoverBackgroundColor: "#3F4D62",
         yAxisID: "y-axis-left",
@@ -105,7 +111,7 @@ describe('test for tooltips', () => {
     expect(tooltipLabelForSecondDataset).toBe('Supervision: 200');
 
     const tooltipLabel = callback.label(tooltipItem[1], data);
-    expect(tooltipLabel).toBe('Supervision Population: 89');
+    expect(tooltipLabel).toBe('Population: 0');
 
     const tooltipEmptyTitle = callback.title(tooltipItem, dataEmpty);
     expect(tooltipEmptyTitle).toBe(undefined);
