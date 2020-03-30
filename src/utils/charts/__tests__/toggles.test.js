@@ -20,7 +20,7 @@ import tk from 'timekeeper';
 
 describe('test for file toggles', () => {
 
-  const tooltipMetric = {
+  const tooltipItemRate = {
     xLabel: 'High',
     yLabel: 10.56,
     label: 'High',
@@ -189,7 +189,7 @@ describe('test for file toggles', () => {
     tk.freeze(testDate);
 
     const periodMonth = toggleMethods.getPeriodLabelFromMetricPeriodMonthsToggle(12);
-    expect(periodMonth).toBe('2019-3-1 to present');
+    expect(periodMonth).toBe('3/1/2019 to present');
 
     const emptyPeriodMonth = toggleMethods.getPeriodLabelFromMetricPeriodMonthsToggle(undefined);
     expect(emptyPeriodMonth).toBe('Invalid Date to present');
@@ -283,8 +283,8 @@ describe('test for file toggles', () => {
       y: 211.504
     };
 
-    const tooltipMetric = toggleMethods.standardTooltipForCountMetric(tooltip, data);
-    expect(tooltipMetric).toBe('Successful completions: 203');
+    const standardToolTipCount = toggleMethods.standardTooltipForCountMetric(tooltip, data);
+    expect(standardToolTipCount).toBe('Successful completions: 203');
 
     const tooltipMetricYLabel = toggleMethods.standardTooltipForCountMetric(tooltipYLabel, data);
     expect(tooltipMetricYLabel).toBe('Successful completions: 204');
@@ -345,20 +345,20 @@ describe('test for file toggles', () => {
       ]
     };
 
-    const tooltipMetric = toggleMethods.standardTooltipForRateMetric(tooltipItem, data);
-    expect(tooltipMetric).toBe('Success rate: 49.37%');
+    const standardTooltip = toggleMethods.standardTooltipForRateMetric(tooltipItem, data);
+    expect(standardTooltip).toBe('Success rate: 49.37%');
 
     const tooltipEmptyMetric = toggleMethods.standardTooltipForRateMetric(tooltipItem, dataEmptyLabel);
     expect(tooltipEmptyMetric).toBe(': 49.37%');
   });
 
   it('tooltip for rate metric with counts', () => {
-    const tooltipWithCount = toggleMethods.tooltipForRateMetricWithCounts(tooltipMetric, dataMetric, numbers, denominators);
+    const tooltipWithCount = toggleMethods.tooltipForRateMetricWithCounts(tooltipItemRate, dataMetric, numbers, denominators);
     expect(tooltipWithCount).toBe("Revocation rate: 10.56% (19/180)");
   });
 
   it('tooltip for rate metric with nested counts', () => {
-    const tooltipTest = toggleMethods.tooltipForRateMetricWithNestedCounts(tooltipMetric, dataMetric, numbers, denominators);
+    const tooltipTest = toggleMethods.tooltipForRateMetricWithNestedCounts(tooltipItemRate, dataMetric, numbers, denominators);
     expect(tooltipTest).toBe('Revocation rate: 10.56%');
   });
 
@@ -374,8 +374,8 @@ describe('test for file toggles', () => {
     const tooltipTestCount = toggleMethods.updateTooltipForMetricTypeWithCounts('count', tooltipItemCount, dataCount, numbers, denominators);
     expect(tooltipTestCount).toBe('Referral count: 49');
 
-    const tooltipTestForRate = toggleMethods.updateTooltipForMetricTypeWithCounts('rates', tooltipItemCount, dataForRates, numbers, denominators);
-    expect(tooltipTestForRate).toBe('Referral rate: 49%');
+    const tooltipTestForRate = toggleMethods.updateTooltipForMetricTypeWithCounts('rates', tooltipItemRate, dataMetric, numbers, denominators);
+    expect(tooltipTestForRate).toBe('Revocation rate: 10.56% (19/180)');
   });
 
   it('filter dataset by metric period months', () => {
