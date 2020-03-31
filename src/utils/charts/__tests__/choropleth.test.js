@@ -20,20 +20,37 @@ import * as choroplethMethods from '../choropleth';
 
 describe('test for choropleth', () => {
 
-  it('color for value', () => {
-    const colorForValue = choroplethMethods.colorForValue(110, 110, true, undefined);
+  it('color for charts with negative values', () => {
+    const colorForValue = choroplethMethods.colorForValue(110, 110, true, true);
+    expect(colorForValue).toBe('rgb(59, 31, 42)');
+
+    const colorForNegativeValue = choroplethMethods.colorForValue(-110, 110, true, true);
+    expect(colorForNegativeValue).toBe('rgb(31, 42, 59)');
+
+    const colorForValueUseDarkFalse = choroplethMethods.colorForValue(110, 110, false, true);
+    expect(colorForValueUseDarkFalse).toBe('rgb(209, 34, 73)');
+
+    const colorForNegativeValueUseDarkFalse = choroplethMethods.colorForValue(-110, 110, false, true);
+    expect(colorForNegativeValueUseDarkFalse).toBe('rgb(63, 77, 98)');
+  });
+
+  it('color for charts without negative values', () => {
+    const colorForValue = choroplethMethods.colorForValue(110, 110, true, false);
     expect(colorForValue).toBe('rgb(31, 42, 59)');
 
-    const colorForValueUseDarkFalse = choroplethMethods.colorForValue(110, 110, false, undefined);
+    const colorForNegativeValue = choroplethMethods.colorForValue(-110, 110, true, false);
+    expect(colorForNegativeValue).toBe('rgb(255, 255, 255)');
+
+    const colorForValueUseDarkFalse = choroplethMethods.colorForValue(110, 110, false, false);
     expect(colorForValueUseDarkFalse).toBe('rgb(63, 77, 98)');
 
-    const colorForEmptyValue = choroplethMethods.colorForValue(undefined, undefined, undefined, undefined);
-    expect(colorForEmptyValue).toBe(undefined);
+    const colorForNegativeValueUseDarkFalse = choroplethMethods.colorForValue(-110, 110, false, false);
+    expect(colorForNegativeValueUseDarkFalse).toBe('rgb(255, 255, 255)');
   });
 
   it('county name from code', () => {
-    const newCountryName = choroplethMethods.countyNameFromCode('213 – central areas of the City of Los Angeles', 'Los_Angeles');
-    expect(newCountryName).toBe('Los Angeles');
+    const newCountryName = choroplethMethods.countyNameFromCode('CA', 'Los Angeles Country');
+    expect(newCountryName).toBe('Los Angeles Country');
 
     const emptyCountryName = choroplethMethods.countyNameFromCode(undefined, undefined);
     expect(emptyCountryName).toBe(undefined);
