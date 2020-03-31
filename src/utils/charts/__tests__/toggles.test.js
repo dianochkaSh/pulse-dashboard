@@ -536,4 +536,47 @@ describe('test for file toggles', () => {
     expect(oneLabel).toEqual(expectedOneLabel);
   });
 
+  it('filter dataset by district', () => {
+    const district = 'all';
+
+    const dataset = [
+      {
+        supervision_type: "PAROLE",
+        district: "ALL",
+        state_code: "US_DEMO",
+        metric_period_months: "1",
+        new_admissions: "32",
+        technicals: "20",
+        non_technicals: "30",
+        unknown_revocations: "12"
+      },
+      {
+        supervision_type: "PAROLE",
+        district: "No",
+        state_code: "US_DEMO",
+        metric_period_months: "6",
+        new_admissions: "141",
+        technicals: "109",
+        non_technicals: "91",
+        unknown_revocations: "37"
+      }
+    ];
+
+    const expectedToggleFiltersTest =  [
+      {
+        supervision_type: 'PAROLE',
+        district: 'ALL',
+        state_code: 'US_DEMO',
+        metric_period_months: '1',
+        new_admissions: '32',
+        technicals: '20',
+        non_technicals: '30',
+        unknown_revocations: '12'
+      }
+    ];
+
+    const toggleFiltersTest = toggleMethods.filterDatasetByDistrict(dataset, district);
+    expect(toggleFiltersTest).toEqual(expectedToggleFiltersTest);
+  });
+
 });
