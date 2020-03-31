@@ -32,6 +32,11 @@ describe('test for choropleth', () => {
   });
 
   it('county name from code', () => {
+    const newCountryName = choroplethMethods.countyNameFromCode('213 – central areas of the City of Los Angeles', 'Los_Angeles');
+    expect(newCountryName).toBe('Los Angeles');
 
-  })
+    const emptyCountryName = choroplethMethods.countyNameFromCode(undefined, undefined);
+    expect(emptyCountryName).toBe(undefined);
+  });
+
 });
