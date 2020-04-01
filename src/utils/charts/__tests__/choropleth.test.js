@@ -54,6 +54,7 @@ describe("test for choropleth", () => {
       true
     );
     expect(colorForCentralValue).toBe("rgb(196, 136, 151)");
+
     const colorForCentralNegativeValue = choroplethMethods.colorForValue(
       -55,
       110,
