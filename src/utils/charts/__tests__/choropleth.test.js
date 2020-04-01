@@ -111,7 +111,6 @@ describe("test for choropleth", () => {
       false
     );
     expect(colorForCentralNegativeValue).toBe("rgb(255, 255, 255)");
-
   });
 
   it("county name from code", () => {
