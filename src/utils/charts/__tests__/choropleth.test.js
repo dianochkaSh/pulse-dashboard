@@ -46,6 +46,21 @@ describe("test for choropleth", () => {
       true
     );
     expect(colorForNegativeValueUseDarkFalse).toBe("rgb(63, 77, 98)");
+
+    const colorForCentralValue = choroplethMethods.colorForValue(
+      55,
+      110,
+      true,
+      true
+    );
+    expect(colorForCentralValue).toBe("rgb(196, 136, 151)");
+    const colorForCentralNegativeValue = choroplethMethods.colorForValue(
+      -55,
+      110,
+      true,
+      true
+    );
+    expect(colorForCentralNegativeValue).toBe("rgb(136, 151, 196)");
   });
 
   it("color for charts without negative values", () => {
@@ -80,14 +95,31 @@ describe("test for choropleth", () => {
       false
     );
     expect(colorForNegativeValueUseDarkFalse).toBe("rgb(255, 255, 255)");
+
+    const colorForCentralValue = choroplethMethods.colorForValue(
+      55,
+      110,
+      false,
+      false
+    );
+    expect(colorForCentralValue).toBe("rgb(118, 134, 172)");
+
+    const colorForCentralNegativeValue = choroplethMethods.colorForValue(
+      -55,
+      110,
+      false,
+      false
+    );
+    expect(colorForCentralNegativeValue).toBe("rgb(255, 255, 255)");
+
   });
 
   it("county name from code", () => {
     const newCountryName = choroplethMethods.countyNameFromCode(
-      "CA",
-      "Los Angeles Country"
+      "us_ca",
+      "us_ca_los_angeles"
     );
-    expect(newCountryName).toBe("Los Angeles Country");
+    expect(newCountryName).toBe("los angeles");
 
     const emptyCountryName = choroplethMethods.countyNameFromCode(
       undefined,
