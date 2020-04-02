@@ -21,7 +21,7 @@ import MetricTypeToggle from "../MetricTypeToggle";
 
 configure({ adapter: new Adapter() });
 
-describe("test for component MetricTypeToggle", () => {
+describe("check of displaying MetricTypeToggle component", () => {
   it("metric type = counts", () => {
     const props = {
       onMetricTypeUpdate: jest.fn(),
