@@ -12,3 +12,4 @@ public/
 !src/utils/charts/info.js
 
 !src/utils/charts/__tests__/choropleth.test.js
+!src/components/toggles/__tests__/MetricTypeToggle.test.js
