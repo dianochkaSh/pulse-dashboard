@@ -14,28 +14,61 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // =============================================================================
-import React from 'react';
-import {
-  queryByTestId
-} from '@testing-library/dom'
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import ToggleBar from '../ToggleBar';
+import React from "react";
+import { getAllByTestId } from "@testing-library/dom";
+import { render } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+import ToggleBar from "../ToggleBar";
 
-describe(" test for component ToggleBar", () => {
+describe("test for component ToggleBar", () => {
   const props = {
     stateCode: undefined,
     replaceLa: undefined,
-    setChartMetricPeriodMonths: undefined,
-    setChartSupervisionType: undefined,
-    setChartDistrict: undefined,
   };
-  it('', () => {
+  it("check display component MetricTypeToggle", () => {
     const nextProps = {
       ...props,
-      setChartMetricType: jest.fn()
+      setChartMetricType: jest.fn(),
     };
-    const { container} = render(<ToggleBar {...nextProps} />);
-    expect(queryByTestId(container,"metricType")).toEqual(null);
+    const { container } = render(<ToggleBar {...nextProps} />);
+    expect(getAllByTestId(container, "metricType")).toHaveLength(1);
+  });
+
+  it("check display component MetricPeriodToggle", () => {
+    const nextProps = {
+      ...props,
+      setChartMetricPeriodMonths: jest.fn(),
+    };
+    const { container } = render(<ToggleBar {...nextProps} />);
+    expect(getAllByTestId(container, "metricPeriodToggle")).toHaveLength(1);
+  });
+
+  it("check display component SupervisionTypeToggle", () => {
+    const nextProps = {
+      ...props,
+      setChartSupervisionType: jest.fn(),
+    };
+    const { container } = render(<ToggleBar {...nextProps} />);
+    expect(getAllByTestId(container, "supervisionTypeToggle")).toHaveLength(1);
+  });
+
+  it("check display component SupervisionTypeToggle", () => {
+    const nextProps = {
+      ...props,
+      setChartDistrict: jest.fn(),
+      replaceLa: true,
+      availableDistricts: ["beulah", "bismarck", "bottineau"],
+      districtOffices: [
+        {
+          state_code: "US_DEMO",
+          district: 16,
+          site_name: "Beulah",
+          long: -101.78521,
+          lat: 47.260616,
+        },
+      ],
+    };
+    const { container } = render(<ToggleBar {...nextProps} />);
+    expect(getAllByTestId(container, "districtToggle")).toHaveLength(1);
   });
 });
