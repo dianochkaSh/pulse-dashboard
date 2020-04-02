@@ -23,43 +23,39 @@ configure({ adapter: new Adapter() });
 
 describe("show metric type = count", () => {
   const props = {
-    setChartMetricType: "count",
     districtOffices: [],
     availableDistricts: [],
     stateCode: undefined,
     replaceLa: undefined,
-    setChartMetricPeriodMonths: "3y",
-    setChartSupervisionType: "Everyone",
-    setChartDistrict: "all",
   };
 
   it("check display component MetricTypeToggle", () => {
     const nextProps = {
       ...props,
-      setChartMetricType: "rates",
+      setChartMetricType: jest.fn(),
     };
 
-    const componentToggleBar = shallow(<ToggleBar props={nextProps} />);
+    const componentToggleBar = shallow(<ToggleBar {...nextProps} />);
     expect(componentToggleBar.find("MetricTypeToggle")).toHaveLength(1);
   });
 
   it("check display component MetricPeriodToggle", () => {
     const nextProps = {
       ...props,
-      setChartMetricPeriodMonths: "1y",
+      setChartMetricPeriodMonths: jest.fn(),
     };
 
-    const componentToggleBar = shallow(<ToggleBar props={nextProps} />);
+    const componentToggleBar = shallow(<ToggleBar {...nextProps} />);
     expect(componentToggleBar.find("MetricPeriodToggle")).toHaveLength(1);
   });
 
   it("check display component SupervisionTypeToggle", () => {
     const nextProps = {
       ...props,
-      setChartSupervisionType: "Individuals on parole",
+      setChartSupervisionType: jest.fn(),
     };
 
-    const componentToggleBar = shallow(<ToggleBar props={nextProps} />);
+    const componentToggleBar = shallow(<ToggleBar {...nextProps} />);
     expect(componentToggleBar.find("SupervisionTypeToggle")).toHaveLength(1);
   });
 
@@ -67,7 +63,7 @@ describe("show metric type = count", () => {
     const nextProps = {
       ...props,
       replaceLa: true,
-      setChartDistrict: "16",
+      setChartDistrict: jest.fn(),
       availableDistricts: ["beulah", "bismarck", "bottineau"],
       districtOffices: [
         {
@@ -79,7 +75,7 @@ describe("show metric type = count", () => {
         },
       ],
     };
-    const componentToggleBar = shallow(<ToggleBar props={nextProps} />);
+    const componentToggleBar = shallow(<ToggleBar {...nextProps} />);
     expect(componentToggleBar.find("DistrictToggle")).toHaveLength(1);
   });
 });
