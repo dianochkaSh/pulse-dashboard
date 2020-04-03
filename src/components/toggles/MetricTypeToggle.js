@@ -38,7 +38,7 @@ class MetricTypeToggle extends React.Component {
 
   render() {
     return (
-      <form data-testid="metricType">
+      <form data-testid="metricTypeToggle">
         <div className="form-check">
           <label>
             <input

@@ -31,7 +31,7 @@ describe("test for component ToggleBar", () => {
       setChartMetricType: jest.fn(),
     };
     const { container } = render(<ToggleBar {...nextProps} />);
-    expect(getAllByTestId(container, "metricType")).toHaveLength(1);
+    expect(getAllByTestId(container, "metricTypeToggle")).toHaveLength(1);
   });
 
   it("display component MetricPeriodToggle", () => {
@@ -52,7 +52,7 @@ describe("test for component ToggleBar", () => {
     expect(getAllByTestId(container, "supervisionTypeToggle")).toHaveLength(1);
   });
 
-  it("display component SupervisionTypeToggle", () => {
+  it("display component DistrictToggle", () => {
     const nextProps = {
       ...props,
       setChartDistrict: jest.fn(),
