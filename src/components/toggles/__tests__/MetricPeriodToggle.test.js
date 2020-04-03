@@ -45,7 +45,7 @@ describe("test for component MetricPeriodToggle", () => {
     expect(inputValue1.value).toBe("1");
   });
 
-  it("metric period = 36", () => {
+  it("metric period contains 3y", () => {
     const handleChange = jest.fn();
     const { container } = render(<MetricPeriodToggle {...props} />);
     const inputValue36 = getByLabelText(container, "3y", {
@@ -61,7 +61,7 @@ describe("test for component MetricPeriodToggle", () => {
     }, 1000);
   });
 
-  it("metric period = 6", () => {
+  it("metric period contains 6m", () => {
     const handleChange = jest.fn();
     const { container } = render(<MetricPeriodToggle {...props} />);
     const inputValue6 = getByLabelText(container, "6m", {
@@ -77,7 +77,7 @@ describe("test for component MetricPeriodToggle", () => {
     }, 1000);
   });
 
-  it("metric period = 3", () => {
+  it("metric period contains 3m", () => {
     const handleChange = jest.fn();
     const { container } = render(<MetricPeriodToggle {...props} />);
 
@@ -94,7 +94,7 @@ describe("test for component MetricPeriodToggle", () => {
     }, 1000);
   });
 
-  it("metric period = 1", () => {
+  it("metric period contains 1m", () => {
     const handleChange = jest.fn();
     const { container } = render(<MetricPeriodToggle {...props} />);
     const inputValue1 = getByLabelText(container, "1m", {
@@ -110,7 +110,7 @@ describe("test for component MetricPeriodToggle", () => {
     }, 1000);
   });
 
-  it("metric period = 12", () => {
+  it("metric period contains 1y", () => {
     const handleChange = jest.fn();
     const { container } = render(<MetricPeriodToggle {...props} />);
     const inputValue12 = getByLabelText(container, "1y", {
