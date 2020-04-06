@@ -13,3 +13,4 @@ public/
 !src/utils/charts/info.js
 !src/components/toggles/__tests__/MetricTypeToggle.test.js
 !src/components/toggles/__tests__/ToggleBar.test.js
+!src/components/toggles/__tests__/SupervisionTypeToggle.test.js
