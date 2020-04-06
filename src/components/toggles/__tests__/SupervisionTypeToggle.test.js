@@ -62,16 +62,16 @@ describe("test for component SupervisionTypeToggle", () => {
 
   it("supervision type contains Individuals on probation", () => {
     const { container } = render(<SupervisionTypeToggle {...props} />);
-    const inputValueAll = container.querySelector("input[value='all']");
-    runSupervisionChangeTest(inputValueAll, "all");
+    const inputValueAll = container.querySelector("input[value='probation']");
+    runSupervisionChangeTest(inputValueAll, "probation");
   });
 
   it("supervision type contains Individuals on parole", () => {
     const { container } = render(<SupervisionTypeToggle {...props} />);
     const inputValueProbation = container.querySelector(
-      "input[value='probation']"
+      "input[value='parole']"
     );
-    runSupervisionChangeTest(inputValueProbation, "probation");
+    runSupervisionChangeTest(inputValueProbation, "parole");
   });
 
   it("supervision type contains everyone", () => {
