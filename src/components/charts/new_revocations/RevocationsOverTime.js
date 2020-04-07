@@ -16,7 +16,7 @@
 // =============================================================================
 
 import React, { useState, useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import ExportMenu from '../ExportMenu';
 
 import { COLORS } from '../../../assets/scripts/constants/colors';
@@ -77,6 +77,9 @@ const RevocationsOverTime = (props) => {
     lineTension: 0,
     borderWidth: 2,
     data: chartDataPoints,
+    backgroundColor: COLORS['lantern-light-blue'],
+    hoverBackgroundColor: COLORS['lantern-light-blue'],
+    hoverBorderColor: COLORS['lantern-light-blue']
   }];
 
   const chart = (
@@ -120,6 +123,50 @@ const RevocationsOverTime = (props) => {
     />
   );
 
+  const chartBar = (
+    <Bar
+      id={chartId}
+      width={200}
+      data={{
+        labels: chartLabels,
+        datasets
+      }}
+      options={{
+        maintainAspectRatio: false,
+        responsive: true,
+        legend: {
+          display: false,
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              autoSkip: false,
+            },
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'People revoked',
+            },
+            ticks: {
+              min: 0,
+            },
+          }],
+        },
+        tooltips: {
+          backgroundColor: COLORS['grey-800-light'],
+          mode: 'x',
+          callbacks: {
+            title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
+          },
+        },
+        annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
+      }}
+    />
+  );
+  const countZero = chartDataPoints.filter(item => item === 0).length;
+
+
   return (
     <div>
       <h4>
@@ -135,7 +182,7 @@ const RevocationsOverTime = (props) => {
       </h6>
 
       <div className="chart-container fs-block" style={{ position: 'relative', height: '180px' }}>
-        {chart}
+        { chartLabels.length > 3 ? chart : chartBar }
       </div>
     </div>
   );
