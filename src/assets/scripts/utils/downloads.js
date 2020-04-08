@@ -62,11 +62,13 @@ function downloadCanvasImage(canvas, filename, chartTitle, toggleStates) {
   if (toggleStates !== undefined && toggleStates.metricType !== undefined) {
     downloadjs(data, filename, 'image/png;base64');
   } else {
-    return {
-      filename: filename,
-      data: data.substring(22),
-      type: "img"
-    }
+    return [
+      filename,
+      data.substring(22),
+      {
+        base64: true
+      }
+    ]
   }
 
 }
@@ -74,48 +76,44 @@ function downloadMethodologyFile(chartId, chartTitle, aboutChart, toggleStates )
   const infoChart = infoAboutChart[chartId];
   if (infoChart !== undefined) {
     const startDate = new Date();
-    let text = "Chart: " + chartTitle + "\r\n";
-    text += "Dates: " + aboutChart + "\r\n";
-    text += "Applied filters: " + "\r\n";
-    text += "- " + toggleStates.metricPeriodMonths+ " mounts, " + toggleStates.district + " districts, " + toggleStates.chargeCategory + " supervision levels, " + toggleStates.supervisionType + " supervision types" + "\r\n";
-    text += (toggleStates.violationType !== undefined && toggleStates. reportedViolations) ? "- "+ toggleStates. reportedViolations + " violations or notices of citations, most severe:" + toggleStates.violationType + "\r\n"  : '';
-    text += "Export Date: " + startDate.toLocaleDateString('en-US') + "\r\n \n\r";
-    text += "\r\n";
+    let text = `
+Chart: ${chartTitle}\r\n
+Dates: ${aboutChart} \r\n
+Applied filters:\r\n
+- ${toggleStates.metricPeriodMonths }  mounts, ${toggleStates.district} districts, ${toggleStates.chargeCategory} supervision levels, ${toggleStates.supervisionType} supervision types \r\n
+${(toggleStates.violationType !== undefined && toggleStates. reportedViolations) ? "- " + toggleStates. reportedViolations + " violations or notices of citations, most severe:" + toggleStates.violationType + " \r\n" : "" }
+Export Date: ${startDate.toLocaleDateString('en-US')} \n\r
+  \r\n`;
     infoChart.map((chart) => {
       text += chart.header + "\r\n";
       text += chart.body + "\r\n";
       text += "\r\n";
     });
-    const filename = "Methodology.txt";
-    return {
-      filename: filename,
-      data: text,
-      exportName: "Methodology"
-    };
+    const filename = "methodology.txt";
+    return [
+      filename,
+      text,
+      {
+        binary:true
+      }
+    ];
   }
 }
 
 function downloadZipFile(datafile1, datafile2, titleFile) {
   let zip = new JSZip();
-  zip.file(datafile1.filename, datafile1.data, { binary:true });
-  if (datafile2.type !== "img") {
-    zip.file(datafile2.filename, datafile2.data, { binary:true });
-  } else {
-    zip.file(datafile2.filename, datafile2.data, { base64: true });
-  }
-
-  zip.generateAsync({type:"blob"})
-    .then(function(content)
-    {
+  zip.file(datafile1[0], datafile1[1], datafile1[3]);
+  zip.file(datafile2[0], datafile2[1], datafile2[3]);
+  zip.generateAsync({ type:"blob" })
+    .then(function(content) {
       downloadjs(content, titleFile);
     });
-
 }
 function downloadObjectAsCsv(exportObj, exportName, toggleStates) {
   const options = {
     mapHeaders: (header) => header.replace(/label|values./, ''),
   };
-  let obj = {};
+  let obj = [];
 
   csvExport(exportObj.series, options, (err, csv) => {
     if (err) throw err;
@@ -127,9 +125,9 @@ function downloadObjectAsCsv(exportObj, exportName, toggleStates) {
     } else {
       const encodedCsv = encodeURIComponent(csv);
       const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
-      obj.filename = filename;
-      obj.data = csv;
-      obj.type = "csv";
+      obj.push(filename);
+      obj.push(csv);
+      obj.push({ binary: true });
       if (toggleStates !== undefined && toggleStates.metricType !== undefined) {
         downloadjs(dataStr, filename, 'text/csv');
       }
@@ -190,7 +188,7 @@ function configureDataDownloadButton(
     } else {
       let methodologyFile = downloadMethodologyFile(chartId, chartTitle, aboutChart, toggleStates);
       let csvFile = downloadObjectAsCsv(exportData, filename);
-      downloadZipFile(methodologyFile, csvFile, "Export_data.zip");
+      downloadZipFile(methodologyFile, csvFile, "export_data.zip");
     }
 
   };
@@ -201,7 +199,7 @@ function configureImageDownload(canvas, filename, chartTitle, toggleStates, char
   } else {
     let methodologyFile = downloadMethodologyFile(chartId, chartTitle, aboutChart, toggleStates);
     let imageFile = downloadCanvasImage(canvas, filename, chartTitle, toggleStates);
-    downloadZipFile(methodologyFile, imageFile, "Export_image.zip");
+    downloadZipFile(methodologyFile, imageFile, "export_image.zip");
   }
 
 }
