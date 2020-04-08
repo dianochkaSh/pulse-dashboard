@@ -366,6 +366,7 @@ const Snapshots = () => {
                       metricPeriodMonths={chartMetricPeriodMonths}
                       daysAtLibertyByMonth={apiData.avg_days_at_liberty_by_month}
                       header="daysAtLibertySnapshot-header"
+                      metricType={chartMetricType}
                     />
                   </div>
                 </div>
@@ -445,6 +446,7 @@ const Snapshots = () => {
                         district={chartDistrict}
                         lsirScoreChangeByMonth={apiData.average_change_lsir_score_by_month}
                         header="lsirScoreChangeSnapshot-header"
+                        metricType={chartMetricType}
                       />
                     )}
                     {geoViewEnabledALSI === true && (
