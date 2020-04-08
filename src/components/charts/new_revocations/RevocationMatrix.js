@@ -181,6 +181,8 @@ const RevocationMatrix = (props) => {
           elementDatasets={exportableMatrixData()}
           elementLabels={VIOLATION_COUNTS.map((count) => violationCountLabel(count))}
           metricTitle="People revoked to prison by violation history"
+          aboutChart={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
+          filters={props.filters}
         />
       </h4>
       <h6>

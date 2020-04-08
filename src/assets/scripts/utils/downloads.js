@@ -19,21 +19,23 @@ import downloadjs from 'downloadjs';
 import html2canvas from 'html2canvas';
 import * as csvExport from 'jsonexport/dist';
 import { timeStamp } from './time';
+import infoAboutChart from '../../../utils/charts/info';
 
 function configureFilename(chartId, toggleStates) {
   let filename = `${chartId}-${timeStamp()}`;
-
-  if (toggleStates.metricType) {
-    filename = filename.concat('-', toggleStates.metricType);
-  }
-  if (toggleStates.metricPeriodMonths) {
-    filename = filename.concat('-', toggleStates.metricPeriodMonths);
-  }
-  if (toggleStates.supervisionType) {
-    filename = filename.concat('-', toggleStates.supervisionType);
-  }
-  if (toggleStates.district) {
-    filename = filename.concat('-', toggleStates.district);
+  if (toggleStates !== undefined) {
+    if (toggleStates.metricType !== undefined) {
+      filename = filename.concat('-', toggleStates.metricType);
+    }
+    if (toggleStates.metricPeriodMonths) {
+      filename = filename.concat('-', toggleStates.metricPeriodMonths);
+    }
+    if (toggleStates.supervisionType) {
+      filename = filename.concat('-', toggleStates.supervisionType);
+    }
+    if (toggleStates.district) {
+      filename = filename.concat('-', toggleStates.district);
+    }
   }
 
   return filename;
@@ -57,6 +59,24 @@ function downloadCanvasImage(canvas, filename, chartTitle) {
 
   const data = temporaryCanvas.toDataURL('image/png;base64');
   downloadjs(data, filename, 'image/png;base64');
+}
+function downloadMethodologyFile(chartId, exportName, chartTitle, aboutChart, toggleStates ){
+  const infoChart = infoAboutChart[chartId];
+  if (infoChart !== undefined) {
+    const startDate = new Date();
+    let text = "Chart: " + chartTitle + "\r\n";
+    text += "Dates: " + aboutChart + "\r\n";
+    text += "Applied filters: " + "\r\n";
+    text += "-" + toggleStates.metricPeriodMonths+ " mounts, " + toggleStates.district + " districts, " + toggleStates.chargeCategory + " supervision levels, " + toggleStates.supervisionType + " supervision types" + "\r\n";
+    text += "Export Date: " + startDate.toLocaleDateString('en-US') + "\r\n";
+    infoChart.map((chart) => {
+      text += chart.header + "\r\n";
+      text += chart.body + "\r\n"
+    });
+    const filename = exportName + ".txt";
+    downloadjs(text, filename, 'text/plain');
+  }
+
 }
 
 function downloadObjectAsCsv(exportObj, exportName) {
@@ -87,7 +107,7 @@ function downloadObjectAsJson(exportObj, exportName) {
 
 function configureDataDownloadButton(
   chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-  convertValuesToNumbers, handleTimeStringLabels,
+  convertValuesToNumbers, handleTimeStringLabels, chartTitle, aboutChart
 ) {
   return function downloadChartData() {
     const exportData = exportedStructureCallback();
@@ -126,13 +146,14 @@ function configureDataDownloadButton(
     });
 
     const filename = configureFilename(chartId, toggleStates);
+    downloadMethodologyFile(chartId, filename, chartTitle, aboutChart, toggleStates);
     downloadObjectAsCsv(exportData, filename);
   };
 }
 
 function configureDownloadButtons(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels,
+  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, aboutChart
 ) {
   const filename = configureFilename(chartId, toggleStates);
 
@@ -147,14 +168,14 @@ function configureDownloadButtons(
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton(
       chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-      convertValuesToNumbers, handleTimeStringLabels,
+      convertValuesToNumbers, handleTimeStringLabels, chartTitle, aboutChart
     );
   }
 }
 
 function configureDownloadButtonsRegularElement(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels,
+  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, aboutChart
 ) {
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
@@ -172,7 +193,7 @@ function configureDownloadButtonsRegularElement(
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton(
       chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-      convertValuesToNumbers, handleTimeStringLabels,
+      convertValuesToNumbers, handleTimeStringLabels, chartTitle, aboutChart
     );
   }
 }

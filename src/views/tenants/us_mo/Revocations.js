@@ -244,6 +244,7 @@ const Revocations = () => {
           <RevocationsByRiskLevel
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_risk_level)}
             metricPeriodMonths={filters.metricPeriodMonths}
+            filters={filters}
           />
         );
       case 'Violation':
@@ -251,6 +252,7 @@ const Revocations = () => {
           <RevocationsByViolation
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_violation)}
             metricPeriodMonths={filters.metricPeriodMonths}
+            filters={filters}
           />
         );
       case 'Gender':
@@ -258,6 +260,7 @@ const Revocations = () => {
           <RevocationsByGender
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_gender)}
             metricPeriodMonths={filters.metricPeriodMonths}
+            filters={filters}
           />
         );
       case 'Race':
@@ -265,6 +268,7 @@ const Revocations = () => {
           <RevocationsByRace
             data={applyAllFilters(apiData.revocations_matrix_distribution_by_race)}
             metricPeriodMonths={filters.metricPeriodMonths}
+            filters={filters}
           />
         );
       default:
@@ -274,6 +278,7 @@ const Revocations = () => {
             supervisionPopulation={applyAllFilters(apiData.revocations_matrix_supervision_distribution_by_district, ['district'])}
             metricPeriodMonths={filters.metricPeriodMonths}
             currentDistrict={filters.district}
+            filters={filters}
           />
         );
     }
@@ -329,6 +334,7 @@ const Revocations = () => {
         <RevocationCountOverTime
           data={applyAllFilters(apiData.revocations_matrix_by_month, ['metricPeriodMonths'])}
           metricPeriodMonths={filters.metricPeriodMonths}
+          filters={filters}
         />
       </div>
       <div className="d-f m-20 container-all-charts">
