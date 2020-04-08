@@ -62,13 +62,11 @@ function downloadCanvasImage(canvas, filename, chartTitle, toggleStates) {
   if (toggleStates !== undefined && toggleStates.metricType !== undefined) {
     downloadjs(data, filename, 'image/png;base64');
   } else {
-    return [
-      filename,
-      data.substring(22),
-      {
-        base64: true
-      }
-    ]
+    return {
+      name: filename,
+      data: data.substring(22),
+      type: "base64"
+    }
   }
 
 }
@@ -90,24 +88,30 @@ Export Date: ${startDate.toLocaleDateString('en-US')} \n\r
       text += "\r\n";
     });
     const filename = "methodology.txt";
-    return [
-      filename,
-      text,
-      {
-        binary:true
-      }
-    ];
+    return {
+      name: filename,
+      data: text,
+      type: "binary"
+    };
   }
 }
 
-function downloadZipFile(datafile1, datafile2, titleFile) {
+function downloadZipFile(files, titleFile) {
   let zip = new JSZip();
-  zip.file(datafile1[0], datafile1[1], datafile1[3]);
-  zip.file(datafile2[0], datafile2[1], datafile2[3]);
-  zip.generateAsync({ type:"blob" })
-    .then(function(content) {
-      downloadjs(content, titleFile);
-    });
+  files.map((file) => {
+    let fileTypeDescriptor = null;
+    if (file.type === 'binary') {
+      fileTypeDescriptor = { binary: true };
+    } else if (file.type === 'base64') {
+      fileTypeDescriptor = { base64: true };
+    }
+    if (fileTypeDescriptor !== null) {
+      zip.file(file.name, file.data, fileTypeDescriptor);
+    }
+  });
+  zip.generateAsync({ type: 'blob' }).then(function(content) {
+    downloadjs(content, titleFile);
+  });
 }
 function downloadObjectAsCsv(exportObj, exportName, toggleStates) {
   const options = {
@@ -125,9 +129,9 @@ function downloadObjectAsCsv(exportObj, exportName, toggleStates) {
     } else {
       const encodedCsv = encodeURIComponent(csv);
       const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
-      obj.push(filename);
-      obj.push(csv);
-      obj.push({ binary: true });
+      obj.name = filename;
+      obj.data = csv;
+      obj.type = "binary";
       if (toggleStates !== undefined && toggleStates.metricType !== undefined) {
         downloadjs(dataStr, filename, 'text/csv');
       }
@@ -188,7 +192,10 @@ function configureDataDownloadButton(
     } else {
       let methodologyFile = downloadMethodologyFile(chartId, chartTitle, aboutChart, toggleStates);
       let csvFile = downloadObjectAsCsv(exportData, filename);
-      downloadZipFile(methodologyFile, csvFile, "export_data.zip");
+      let files = [];
+      files.push(methodologyFile);
+      files.push(csvFile);
+      downloadZipFile(files, "export_data.zip");
     }
 
   };
@@ -199,7 +206,10 @@ function configureImageDownload(canvas, filename, chartTitle, toggleStates, char
   } else {
     let methodologyFile = downloadMethodologyFile(chartId, chartTitle, aboutChart, toggleStates);
     let imageFile = downloadCanvasImage(canvas, filename, chartTitle, toggleStates);
-    downloadZipFile(methodologyFile, imageFile, "export_image.zip");
+    let files = [];
+    files.push(methodologyFile);
+    files.push(imageFile);
+    downloadZipFile(files, "export_image.zip");
   }
 
 }
