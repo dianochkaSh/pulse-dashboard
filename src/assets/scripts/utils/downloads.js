@@ -79,7 +79,7 @@ Chart: ${chartTitle}\r\n
 Dates: ${aboutChart} \r\n
 Applied filters:\r\n
 - ${toggleStates.metricPeriodMonths }  mounts, ${toggleStates.district} districts, ${toggleStates.chargeCategory} supervision levels, ${toggleStates.supervisionType} supervision types \r\n
-${(toggleStates.violationType !== undefined && toggleStates. reportedViolations) ? "- " + toggleStates. reportedViolations + " violations or notices of citations, most severe:" + toggleStates.violationType + " \r\n" : "" }
+${(toggleStates.violationType !== undefined && toggleStates. reportedViolations) ? "- " + toggleStates. reportedViolations + " violations or notices of citations, most severe: " + toggleStates.violationType + " \r\n" : "" }
 Export Date: ${startDate.toLocaleDateString('en-US')} \n\r
   \r\n`;
     infoChart.map((chart) => {
