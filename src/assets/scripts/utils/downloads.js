@@ -70,30 +70,61 @@ function downloadCanvasImage(canvas, filename, chartTitle, toggleStates) {
   }
 
 }
-function downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates ){
-  const infoChart = infoAboutChart[chartId];
-  if (infoChart !== undefined) {
-    const startDate = new Date();
-    let text = `
-Chart: ${chartTitle}\r\n
-Dates: ${timeWindowDescription} \r\n
-Applied filters:\r\n
-- ${toggleStates.metricPeriodMonths} months, ${toggleStates.district} districts, ${toggleStates.chargeCategory} supervision levels, ${toggleStates.supervisionType} supervision types \r\n
-${(toggleStates.violationType !== undefined && toggleStates.reportedViolations) ? "- " + toggleStates.reportedViolations + " violations or notices of citations, most severe: " + toggleStates.violationType + " \r\n" : "" }
-Export Date: ${startDate.toLocaleDateString('en-US')} \n\r
-  \r\n`;
-    infoChart.map((chart) => {
-      text += chart.header + "\r\n";
-      text += chart.body + "\r\n";
-      text += "\r\n";
-    });
-    const filename = "methodology.txt";
-    return {
-      name: filename,
-      data: text,
-      type: "binary"
-    };
+function getFormattedStr(str) {
+  const firstLetter = str.slice(0, 1);
+  const string = firstLetter.toUpperCase() + str.substring(1);
+  return string.replace('_', ' ');
+}
+
+function getFilterValue(filterValue, descriptionPlural, descriptionOne){
+  let str = '';
+  if (filterValue === "All" || ((parseInt(filterValue) === 12 || parseInt(filterValue) === 36 || parseInt(filterValue) === 6 || parseInt(filterValue) === 3) && (descriptionOne === "month"))) {
+    str = filterValue + " " + descriptionPlural;
+  } else if(parseInt(filterValue) === 1 && (descriptionOne === "month")) {
+    str = filterValue + " " + descriptionOne;
+  } else {
+    str = descriptionOne + getFormattedStr(filterValue.toLowerCase());
   }
+  return str;
+}
+
+function getViolation(toggleStates){
+  let str = '';
+  if (toggleStates.reportedViolations !== undefined || toggleStates.violationType !== undefined) {
+    str += "-";
+    if (toggleStates.reportedViolations !== undefined && toggleStates.reportedViolations !== "" ) {
+      str += toggleStates.reportedViolations + " violations or notices of citations,";
+    }
+    if (toggleStates.violationType !== undefined) {
+      str += " most severe: " + getFormattedStr(toggleStates.violationType.toLowerCase()) + " violations or notices of citations";
+    }
+    return str + "\n";
+  }
+  return "";
+}
+
+function downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates ){
+  let infoChart = infoAboutChart[chartId];
+  infoChart = infoChart === undefined ? [] : infoChart;
+  const startDate = new Date();
+  let text = `
+Chart: ${chartTitle}
+Dates: ${timeWindowDescription}
+Applied filters:
+- ${getFilterValue(toggleStates.metricPeriodMonths, "months", "month")}, ${getFilterValue(toggleStates.district, "districts", "District: ")}, ${getFilterValue(toggleStates.chargeCategory, "supervision levels", "Supervision level: ")}, ${getFilterValue(toggleStates.supervisionType, "supervision types", "Supervision type: ")}\n`;
+text += `${getViolation(toggleStates)}Export Date: ${startDate.toLocaleDateString('en-US')}
+ \r\n`;
+  infoChart.map((chart) => {
+    text += chart.header + "\r\n";
+    text += chart.body + "\r\n";
+    text += "\r\n";
+  });
+  const filename = "methodology.txt";
+  return {
+    name: filename,
+    data: text,
+    type: "binary"
+  };
 }
 
 function downloadZipFile(files, zipFilename ) {
@@ -110,7 +141,7 @@ function downloadZipFile(files, zipFilename ) {
     }
   });
   zip.generateAsync({ type: 'blob' }).then(function(content) {
-    downloadjs(content, zipFilename );
+   downloadjs(content, zipFilename );
   });
 }
 function downloadObjectAsCsv(exportObj, exportName, toggleStates) {
