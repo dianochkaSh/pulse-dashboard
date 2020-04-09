@@ -22,27 +22,28 @@ import { timeStamp } from './time';
 import infoAboutChart from '../../../utils/charts/info';
 import JSZip from 'jszip';
 
-function configureFilename(chartId, toggleStates) {
+function configureFilename(chartId, toggleStates, shouldZipDownload) {
   let filename = `${chartId}-${timeStamp()}`;
-  if (toggleStates !== undefined) {
-    if (toggleStates.metricType !== undefined) {
-      filename = filename.concat('-', toggleStates.metricType);
-    }
-    if (toggleStates.metricPeriodMonths) {
-      filename = filename.concat('-', toggleStates.metricPeriodMonths);
-    }
-    if (toggleStates.supervisionType) {
-      filename = filename.concat('-', toggleStates.supervisionType);
-    }
-    if (toggleStates.district) {
-      filename = filename.concat('-', toggleStates.district);
-    }
+  if (shouldZipDownload) {
+    return filename;
   }
 
+  if (toggleStates.metricType !== undefined) {
+    filename = filename.concat('-', toggleStates.metricType);
+  }
+  if (toggleStates.metricPeriodMonths) {
+    filename = filename.concat('-', toggleStates.metricPeriodMonths);
+  }
+  if (toggleStates.supervisionType) {
+    filename = filename.concat('-', toggleStates.supervisionType);
+  }
+  if (toggleStates.district) {
+    filename = filename.concat('-', toggleStates.district);
+  }
   return filename;
 }
 
-function downloadCanvasImage(canvas, filename, chartTitle, toggleStates) {
+function downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload) {
   const topPadding = 100;
   const temporaryCanvas = document.createElement('canvas');
   temporaryCanvas.width = canvas.width;
@@ -59,16 +60,15 @@ function downloadCanvasImage(canvas, filename, chartTitle, toggleStates) {
   destinationCtx.drawImage(canvas, 0, topPadding);
 
   const data = temporaryCanvas.toDataURL('image/png;base64');
-  if (toggleStates !== undefined && toggleStates.metricType !== undefined) {
-    downloadjs(data, filename, 'image/png;base64');
-  } else {
+  if (shouldZipDownload) {
     return {
       name: filename,
       data: data.substring(22),
       type: "base64"
     }
+  } else {
+    downloadjs(data, filename, 'image/png;base64');
   }
-
 }
 function getFormattedStr(str) {
   const firstLetter = str.slice(0, 1);
@@ -131,10 +131,12 @@ function downloadZipFile(files, zipFilename ) {
   let zip = new JSZip();
   files.map((file) => {
     let fileTypeDescriptor = null;
-    if (file.type === 'binary') {
+    if (file.type === "binary") {
       fileTypeDescriptor = { binary: true };
-    } else if (file.type === 'base64') {
+    } else if (file.type === "base64") {
       fileTypeDescriptor = { base64: true };
+    } else {
+      throw new Error("File type not supported.");
     }
     if (fileTypeDescriptor !== null) {
       zip.file(file.name, file.data, fileTypeDescriptor);
@@ -144,7 +146,7 @@ function downloadZipFile(files, zipFilename ) {
    downloadjs(content, zipFilename );
   });
 }
-function downloadObjectAsCsv(exportObj, exportName, toggleStates) {
+function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {
   const options = {
     mapHeaders: (header) => header.replace(/label|values./, ''),
   };
@@ -163,7 +165,7 @@ function downloadObjectAsCsv(exportObj, exportName, toggleStates) {
       obj.name = filename;
       obj.data = csv;
       obj.type = "binary";
-      if (toggleStates !== undefined && toggleStates.metricType !== undefined) {
+      if (!shouldZipDownload) {
         downloadjs(dataStr, filename, 'text/csv');
       }
     }
@@ -179,7 +181,7 @@ function downloadObjectAsJson(exportObj, exportName) {
 
 function configureDataDownloadButton(
   chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-  convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription
+  convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
 ) {
   return function downloadChartData() {
     const exportData = exportedStructureCallback();
@@ -217,40 +219,39 @@ function configureDataDownloadButton(
       }
     });
 
-    const filename = configureFilename(chartId, toggleStates);
-    if (toggleStates.metricType !== undefined) {
-      downloadObjectAsCsv(exportData, filename, toggleStates);
-    } else {
+    const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
+    if (shouldZipDownload) {
       const methodologyFile = downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates);
-      const csvFile = downloadObjectAsCsv(exportData, filename);
+      const csvFile = downloadObjectAsCsv(exportData, filename, shouldZipDownload);
       let files = [methodologyFile, csvFile];
       downloadZipFile(files, "export_data.zip");
+    } else {
+      downloadObjectAsCsv(exportData, filename);
     }
 
   };
 }
-function configureImageDownload(canvas, filename, chartTitle, toggleStates, chartId, timeWindowDescription) {
-  if(toggleStates.metricType !== undefined) {
-    downloadCanvasImage(canvas, filename, chartTitle, toggleStates);
-  } else {
+function configureImageDownload(canvas, filename, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload) {
+  if (shouldZipDownload) {
     const methodologyFile = downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates);
-    const imageFile = downloadCanvasImage(canvas, filename, chartTitle, toggleStates);
+    const imageFile = downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload);
     const files = [methodologyFile, imageFile];
     downloadZipFile(files, "export_image.zip");
+  } else {
+    downloadCanvasImage(canvas, filename, chartTitle);
   }
 
 }
 function configureDownloadButtons(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription
+  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
 ) {
-  const filename = configureFilename(chartId, toggleStates);
+  const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
 
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
     downloadChartAsImageButton.onclick = function downloadChartImage() {
-      configureImageDownload(chartBox || document.getElementById(chartId), `${filename}.png`, chartTitle, toggleStates, chartId, timeWindowDescription);
-
+      configureImageDownload(chartBox || document.getElementById(chartId), `${filename}.png`, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload);
     };
   }
 
@@ -258,14 +259,14 @@ function configureDownloadButtons(
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton(
       chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-      convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription
+      convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
     );
   }
 }
 
 function configureDownloadButtonsRegularElement(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription
+  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
 ) {
   const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
   if (downloadChartAsImageButton) {
@@ -274,7 +275,7 @@ function configureDownloadButtonsRegularElement(
       // Setting the Y-scroll position fixes a bug that causes the image to be cut off when scrolled
       // partially down the page, without changing the user's actual scroll position
       html2canvas(element, { scrollY: -window.scrollY }).then((canvas) => {
-        configureImageDownload(canvas, `${chartId}-${timeStamp()}.png`, chartTitle, toggleStates, chartId, timeWindowDescription);
+        configureImageDownload(canvas, `${chartId}-${timeStamp()}.png`, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload);
       });
     };
   }
@@ -283,7 +284,7 @@ function configureDownloadButtonsRegularElement(
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton(
       chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-      convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription
+      convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
     );
   }
 }

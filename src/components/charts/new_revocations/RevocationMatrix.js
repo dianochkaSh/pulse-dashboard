@@ -183,6 +183,7 @@ const RevocationMatrix = (props) => {
           metricTitle="People revoked to prison by violation history"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filters}
+          shouldZipDownload={true}
         />
       </h4>
       <h6>

@@ -181,6 +181,7 @@ const RevocationsByRace = (props) => {
           metricTitle="Revocation rates by race/ethnicity and risk level"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filters}
+          shouldZipDownload={true}
         />
       </h4>
       <h6 className="pB-20">
