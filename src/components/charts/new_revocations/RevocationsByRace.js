@@ -179,7 +179,7 @@ const RevocationsByRace = (props) => {
           chartId={chartId}
           chart={chart}
           metricTitle="Revocation rates by race/ethnicity and risk level"
-          aboutChart={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
+          timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filters}
         />
       </h4>

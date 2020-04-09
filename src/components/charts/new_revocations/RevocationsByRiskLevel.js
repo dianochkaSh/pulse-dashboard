@@ -141,7 +141,7 @@ const RevocationsByRiskLevel = (props) => {
           chartId={chartId}
           chart={chart}
           metricTitle="Revocation rates by risk level"
-          aboutChart={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
+          timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filters}
         />
       </h4>

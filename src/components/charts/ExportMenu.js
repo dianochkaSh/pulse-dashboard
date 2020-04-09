@@ -91,7 +91,7 @@ const ExportMenu = (props) => {
       configureDownloadButtonsRegularElement(props.chartId, props.metricTitle,
         props.elementDatasets, props.elementLabels,
         document.getElementById(props.chartId), exportedStructureCallback,
-        props.filters, undefined, undefined, props.aboutChart);
+        props.filters, undefined, undefined, props.timeWindowDescription);
     } else {
       configureDownloadButtons(props.chartId,
         props.metricTitle,
@@ -99,7 +99,7 @@ const ExportMenu = (props) => {
         props.chart.props.data.labels,
         document.getElementById(props.chartId),
         exportedStructureCallback,
-        props.filters, undefined, undefined, props.aboutChart);
+        props.filters, undefined, undefined, props.timeWindowDescription);
     }
   }
 
