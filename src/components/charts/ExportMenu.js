@@ -18,7 +18,7 @@
 import React from 'react';
 
 import {
-  configureDownloadButtons, configureDownloadButtonsRegularElement,
+  configureDownloadButtons, configureDownloadButtonsRegularElement, configureDownloadCsvTable
 } from '../../assets/scripts/utils/downloads';
 import chartIdToInfo from '../../utils/charts/info';
 
@@ -38,7 +38,7 @@ const ExportMenu = (props) => {
           {(props.shouldExport === undefined || props.shouldExport === true) && (
             <a className="dropdown-item" id={`downloadChartAsImage-${props.chartId}`} href="javascript:void(0);">Export image</a>
           )}
-          {(props.shouldExport === undefined || props.shouldExport === true) && (
+          {(props.shouldExport === undefined || props.shouldExport === true || props.isTable) && (
             <a className="dropdown-item" id={`downloadChartData-${props.chartId}`} href="javascript:void(0);">Export data</a>
           )}
         </div>
@@ -98,6 +98,9 @@ const ExportMenu = (props) => {
     }
   }
 
+  if (props.isTable) {
+    configureDownloadCsvTable(props.chartId, props.tableData);
+  }
   return menuSpan;
 };
 

@@ -19,6 +19,8 @@ import downloadjs from 'downloadjs';
 import html2canvas from 'html2canvas';
 import * as csvExport from 'jsonexport/dist';
 import { timeStamp } from './time';
+import { toTitleCase, nameFromOfficerId, humanReadableTitleCase } from "../../../utils/transforms/labels";
+import parseViolationRecord from '../../../utils/charts/parseViolationRecord';
 
 function configureFilename(chartId, toggleStates) {
   let filename = `${chartId}-${timeStamp()}`;
@@ -176,6 +178,33 @@ function configureDownloadButtonsRegularElement(
     );
   }
 }
+function downloadCsvTable (chartId, data) {
+  return function() {
+    let csvString = "DOC ID,District,Officer,Risk level,Officer Recommendation,Violation record \n";
+    let i = 1;
+    data.map((record) => {
+      csvString += record.state_id + ",";
+      csvString += record.district + ",";
+      csvString += nameFromOfficerId(record.officer) + ",";
+      csvString += humanReadableTitleCase(record.risk_level) + ",";
+      csvString += toTitleCase(record.officer_recommendation) + ",";
+      csvString += '"' + parseViolationRecord(record.violation_record) + '"';
+      csvString += "\n";
+      i++;
+    });
+
+    const encodedCsv = encodeURIComponent(csvString);
+    const dataStr = `data:text/csv;charset=utf-8,${encodedCsv}`;
+    downloadjs(dataStr, `${chartId}-${timeStamp()}.csv`, 'text/csv');
+  }
+}
+
+function configureDownloadCsvTable (chartId, data) {
+  const downloadChartDataButton = document.getElementById(`downloadChartData-${chartId}`);
+  if (downloadChartDataButton) {
+    downloadChartDataButton.onclick = downloadCsvTable(chartId, data);
+  }
+}
 
 export {
   downloadCanvasImage,
@@ -183,4 +212,5 @@ export {
   downloadObjectAsJson,
   configureDownloadButtons,
   configureDownloadButtonsRegularElement,
+  configureDownloadCsvTable
 };

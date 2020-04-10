@@ -110,8 +110,11 @@ const CaseTable = (props) => {
       <h4>
         Revoked individuals
         <ExportMenu
-          chartId={chartId}
           shouldExport={false}
+          chartId={chartId}
+          tableData={props.data}
+          metricTitle="Revoked individuals"
+          isTable
         />
       </h4>
       <h6 className="pB-20">
