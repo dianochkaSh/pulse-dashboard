@@ -87,12 +87,12 @@ function getFilterValue(filterValue, descriptionPlural, descriptionOne) {
 function getViolation(toggleStates) {
   let str = '';
   if (toggleStates.reportedViolations !== undefined || toggleStates.violationType !== undefined) {
-    str += "-";
+    str += "- ";
     if (toggleStates.reportedViolations !== undefined && toggleStates.reportedViolations !== "") {
-      str += (toggleStates.reportedViolations + " violations or notices of citations,").trim();
+      str += toggleStates.reportedViolations + " violations or notices of citations, ";
     }
     if (toggleStates.violationType !== undefined) {
-      str += " Most severe: " +  toHumanReadable(toTitleCase(toggleStates.violationType.toLowerCase()));
+      str += "Most severe: " +  toHumanReadable(toTitleCase(toggleStates.violationType.toLowerCase()));
     }
     return str + "\n";
   }
