@@ -81,7 +81,7 @@ const RevocationsOverTime = (props) => {
     hoverBackgroundColor: COLORS['lantern-light-blue'],
     hoverBorderColor: COLORS['lantern-light-blue']
   }];
-
+  const countZero = chartDataPoints.filter(item => item === 0).length;
   const chart = (
     <Line
       id={chartId}
@@ -126,7 +126,7 @@ const RevocationsOverTime = (props) => {
   const chartBar = (
     <Bar
       id={chartId}
-      width={200}
+      width={50}
       data={{
         labels: chartLabels,
         datasets
@@ -141,7 +141,9 @@ const RevocationsOverTime = (props) => {
           xAxes: [{
             ticks: {
               autoSkip: false,
+              barThickness: 'flex',
             },
+            barPercentage: 0.08,
           }],
           yAxes: [{
             scaleLabel: {
@@ -164,7 +166,6 @@ const RevocationsOverTime = (props) => {
       }}
     />
   );
-  const countZero = chartDataPoints.filter(item => item === 0).length;
 
 
   return (
@@ -182,7 +183,7 @@ const RevocationsOverTime = (props) => {
       </h6>
 
       <div className="chart-container fs-block" style={{ position: 'relative', height: '180px' }}>
-        { chartLabels.length > 3 ? chart : chartBar }
+        { countZero > 2 ? chartBar : chart }
       </div>
     </div>
   );
