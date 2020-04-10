@@ -21,6 +21,7 @@ import * as csvExport from 'jsonexport/dist';
 import { timeStamp } from './time';
 import infoAboutChart from '../../../utils/charts/info';
 import JSZip from 'jszip';
+import { toTitleCase, toHumanReadable } from '../../../utils/transforms/labels';
 
 function configureFilename(chartId, toggleStates, shouldZipDownload) {
   let filename = `${chartId}-${timeStamp()}`;
@@ -70,33 +71,28 @@ function downloadCanvasImage(canvas, filename, chartTitle, shouldZipDownload) {
     downloadjs(data, filename, 'image/png;base64');
   }
 }
-function getFormattedStr(str) {
-  const firstLetter = str.slice(0, 1);
-  const string = firstLetter.toUpperCase() + str.substring(1);
-  return string.replace('_', ' ');
-}
 
-function getFilterValue(filterValue, descriptionPlural, descriptionOne){
+function getFilterValue(filterValue, descriptionPlural, descriptionOne) {
   let str = '';
   if (filterValue === "All" || ((parseInt(filterValue) === 12 || parseInt(filterValue) === 36 || parseInt(filterValue) === 6 || parseInt(filterValue) === 3) && (descriptionOne === "month"))) {
     str = filterValue + " " + descriptionPlural;
   } else if(parseInt(filterValue) === 1 && (descriptionOne === "month")) {
     str = filterValue + " " + descriptionOne;
   } else {
-    str = descriptionOne + getFormattedStr(filterValue.toLowerCase());
+    str = descriptionOne + toHumanReadable(toTitleCase(filterValue.toLowerCase()));
   }
   return str;
 }
 
-function getViolation(toggleStates){
+function getViolation(toggleStates) {
   let str = '';
   if (toggleStates.reportedViolations !== undefined || toggleStates.violationType !== undefined) {
     str += "-";
-    if (toggleStates.reportedViolations !== undefined && toggleStates.reportedViolations !== "" ) {
-      str += toggleStates.reportedViolations + " violations or notices of citations,";
+    if (toggleStates.reportedViolations !== undefined && toggleStates.reportedViolations !== "") {
+      str += (toggleStates.reportedViolations + " violations or notices of citations,").trim();
     }
     if (toggleStates.violationType !== undefined) {
-      str += " most severe: " + getFormattedStr(toggleStates.violationType.toLowerCase()) + " violations or notices of citations";
+      str += " Most severe: " +  toHumanReadable(toTitleCase(toggleStates.violationType.toLowerCase()));
     }
     return str + "\n";
   }
@@ -107,12 +103,13 @@ function downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, tog
   let infoChart = infoAboutChart[chartId];
   infoChart = infoChart === undefined ? [] : infoChart;
   const startDate = new Date();
-  let text = `
-Chart: ${chartTitle}
+  let text =
+`Chart: ${chartTitle}
 Dates: ${timeWindowDescription}
 Applied filters:
 - ${getFilterValue(toggleStates.metricPeriodMonths, "months", "month")}, ${getFilterValue(toggleStates.district, "districts", "District: ")}, ${getFilterValue(toggleStates.chargeCategory, "supervision levels", "Supervision level: ")}, ${getFilterValue(toggleStates.supervisionType, "supervision types", "Supervision type: ")}\n`;
-text += `${getViolation(toggleStates)}Export Date: ${startDate.toLocaleDateString('en-US')}
+text += getViolation(toggleStates);
+text +=`Export Date: ${startDate.toLocaleDateString('en-US')}
  \r\n`;
   infoChart.map((chart) => {
     text += chart.header + "\r\n";
@@ -127,7 +124,7 @@ text += `${getViolation(toggleStates)}Export Date: ${startDate.toLocaleDateStrin
   };
 }
 
-function downloadZipFile(files, zipFilename ) {
+function downloadZipFile(files, zipFilename) {
   let zip = new JSZip();
   files.map((file) => {
     let fileTypeDescriptor = null;
@@ -143,7 +140,7 @@ function downloadZipFile(files, zipFilename ) {
     }
   });
   zip.generateAsync({ type: 'blob' }).then(function(content) {
-   downloadjs(content, zipFilename );
+    downloadjs(content, zipFilename);
   });
 }
 function downloadObjectAsCsv(exportObj, exportName, shouldZipDownload) {

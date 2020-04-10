@@ -170,7 +170,6 @@ const RevocationsByDistrict = (props) => {
           metricTitle="Revocations by district"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
           filters={props.filters}
-          shouldZipDownload={true}
         />
       </h4>
       <h6 className="pB-20">

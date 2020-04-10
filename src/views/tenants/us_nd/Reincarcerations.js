@@ -365,7 +365,6 @@ const Reincarcerations = () => {
                 <ReincarcerationRateByStayLength
                   district={chartDistrict}
                   ratesByStayLength={apiData.reincarceration_rate_by_stay_length}
-                  metricType={chartMetricType}
                 />
               </div>
               <div className="layer bdT p-20 w-100 accordion" id="methodologyReincarcerationRateByStayLength">
