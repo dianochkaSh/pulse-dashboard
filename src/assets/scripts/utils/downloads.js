@@ -87,14 +87,16 @@ function getFilterValue(filterValue, descriptionPlural, descriptionOne) {
 function getViolation(toggleStates) {
   let str = '';
   if (toggleStates.reportedViolations !== undefined || toggleStates.violationType !== undefined) {
-    str += "- ";
     if (toggleStates.reportedViolations !== undefined && toggleStates.reportedViolations !== "") {
-      str += toggleStates.reportedViolations + " violations or notices of citations, ";
+      str += "- " + toggleStates.reportedViolations + " violations or notices of citations, ";
+    } else if ((toggleStates.reportedViolations === undefined && toggleStates.reportedViolations === "") && (toggleStates.violationType !== undefined && toggleStates.violationType !== "")) {
+      str += "- ";
     }
-    if (toggleStates.violationType !== undefined) {
+
+    if (toggleStates.violationType !== undefined && toggleStates.violationType !== "") {
       str += "Most severe: " +  toHumanReadable(toTitleCase(toggleStates.violationType.toLowerCase()));
     }
-    return str + "\n";
+    return (str !== "") ? str + "\n": "";
   }
   return "";
 }
