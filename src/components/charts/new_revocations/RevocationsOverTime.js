@@ -81,6 +81,38 @@ const RevocationsOverTime = (props) => {
     hoverBackgroundColor: COLORS['lantern-light-blue'],
     hoverBorderColor: COLORS['lantern-light-blue']
   }];
+
+  const options = {
+    maintainAspectRatio: false,
+    responsive: true,
+    legend: {
+      display: false,
+    },
+    scales: {
+      xAxes: [{
+        ticks: {
+          autoSkip: false,
+        },
+      }],
+      yAxes: [{
+        scaleLabel: {
+          display: true,
+          labelString: 'People revoked',
+        },
+        ticks: {
+          min: 0,
+        },
+      }],
+    },
+    tooltips: {
+      backgroundColor: COLORS['grey-800-light'],
+      mode: 'x',
+      callbacks: {
+        title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
+      },
+    },
+    annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
+  };
   const countZero = chartDataPoints.filter(item => item === 0).length;
   const chart = (
     <Line
@@ -89,39 +121,12 @@ const RevocationsOverTime = (props) => {
         labels: chartLabels,
         datasets,
       }}
-      options={{
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [{
-            ticks: {
-              autoSkip: false,
-            },
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'People revoked',
-            },
-            ticks: {
-              min: 0,
-            },
-          }],
-        },
-        tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'x',
-          callbacks: {
-            title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
-          },
-        },
-        annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
-      }}
+      options={options}
     />
   );
+let optionsBar = options;
+  optionsBar.scales.xAxes[0].ticks.barThickness = 'flex';
+  optionsBar.scales.xAxes[0].barPercentage = 0.08;
 
   const chartBar = (
     <Bar
@@ -131,39 +136,7 @@ const RevocationsOverTime = (props) => {
         labels: chartLabels,
         datasets
       }}
-      options={{
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [{
-            ticks: {
-              autoSkip: false,
-              barThickness: 'flex',
-            },
-            barPercentage: 0.08,
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'People revoked',
-            },
-            ticks: {
-              min: 0,
-            },
-          }],
-        },
-        tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'x',
-          callbacks: {
-            title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
-          },
-        },
-        annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
-      }}
+      options={optionsBar}
     />
   );
 
