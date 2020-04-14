@@ -102,49 +102,6 @@ const RevocationsOverTime = (props) => {
   const maxElement = Math.max.apply(Math, chartDataPoints);
   const maxValue = maxElement <= 3 ? 5 : maxElement;
 
-  const chart = (
-    <Line
-      id={chartId}
-      data={{
-        labels: chartLabels,
-        datasets,
-      }}
-      options={{
-        maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [{
-            ticks: {
-              autoSkip: false,
-            },
-          }],
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: 'People revoked',
-            },
-            ticks: {
-              min: 0,
-              callback(value) {
-                if (value % 1 === 0) {
-                  return value;
-                }
-              },
-              suggestedMax: maxValue,
-            },
-          }],
-        },
-        tooltips: {
-          backgroundColor: COLORS['grey-800-light'],
-          mode: 'x',
-          callbacks: {
-            title: (tooltipItem) => labelCurrentMonth(tooltipItem, chartLabels),
-          },
-        },
-        annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
   const options = {
     maintainAspectRatio: false,
     responsive: true,
@@ -164,6 +121,12 @@ const RevocationsOverTime = (props) => {
         },
         ticks: {
           min: 0,
+          callback(value) {
+            if (value % 1 === 0) {
+              return value;
+            }
+          },
+          suggestedMax: maxValue,
         },
       }],
     },
@@ -176,8 +139,10 @@ const RevocationsOverTime = (props) => {
     },
     annotation: currentMonthBox('currentMonthBoxRevocationsOverTime', chartLabels),
   };
+
   const countZero = chartDataPoints.filter(item => item === 0).length;
-  const chart = (
+
+  const lineChart  = (
     <Line
       id={chartId}
       data={{
@@ -187,11 +152,11 @@ const RevocationsOverTime = (props) => {
       options={options}
     />
   );
-let optionsBar = options;
-  optionsBar.scales.xAxes[0].ticks.barThickness = 'flex';
-  optionsBar.scales.xAxes[0].barPercentage = 0.08;
+  let barOptions = options;
+  barOptions.scales.xAxes[0].ticks.barThickness = 'flex';
+  barOptions.scales.xAxes[0].barPercentage = 0.08;
 
-  const chartBar = (
+  const barChart = (
     <Bar
       id={chartId}
       width={50}
@@ -199,7 +164,7 @@ let optionsBar = options;
         labels: chartLabels,
         datasets
       }}
-      options={optionsBar}
+      options={barOptions}
     />
   );
 
@@ -207,7 +172,7 @@ let optionsBar = options;
   if (awaitingResults(loading, user, awaitingApi)) {
     return <Loading />;
   }
-
+  const chart = countZero > 2 ? barChart : lineChart;
   return (
     <div>
       <h4>
@@ -223,7 +188,7 @@ let optionsBar = options;
       </h6>
 
       <div className="chart-container fs-block" style={{ position: 'relative', height: '180px' }}>
-        { countZero > 2 ? chartBar : chart }
+        {chart}
       </div>
     </div>
   );
