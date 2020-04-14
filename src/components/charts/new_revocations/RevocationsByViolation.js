@@ -202,7 +202,7 @@ const RevocationsByViolation = (props) => {
           chart={chart}
           metricTitle="Relative frequency of violation types"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
-          filters={props.filters}
+          filters={props.filterStates}
         />
       </h4>
       <h6 className="pB-20">

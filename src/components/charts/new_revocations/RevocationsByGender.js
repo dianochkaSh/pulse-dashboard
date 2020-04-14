@@ -185,7 +185,7 @@ const RevocationsByGender = (props) => {
           chart={chart}
           metricTitle="Revocation rates by gender and risk level"
           timeWindowDescription={`${getTrailingLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)} (${getPeriodLabelFromMetricPeriodMonthsToggle(props.metricPeriodMonths)})`}
-          filters={props.filters}
+          filters={props.filterStates}
         />
       </h4>
       <h6 className="pB-20">

@@ -387,7 +387,6 @@ const Revocations = () => {
           skippedFilters={['metricPeriodMonths']}
           filterStates={filters}
           metricPeriodMonths={filters.metricPeriodMonths}
-          filters={filters}
         />
       </div>
       <div className="d-f m-20 container-all-charts">
@@ -395,7 +394,6 @@ const Revocations = () => {
             <RevocationMatrix
               dataFilter={applyTopLevelFilters}
               filterStates={filters}
-              filters={filters}
               updateFilters={updateFilters}
               metricPeriodMonths={filters.metricPeriodMonths}
             />
