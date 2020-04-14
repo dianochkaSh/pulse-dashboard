@@ -86,19 +86,16 @@ function getFilterValue(filterValue, descriptionPlural, descriptionOne) {
 
 function getViolation(toggleStates) {
   let str = '';
-  if (toggleStates.reportedViolations !== undefined || toggleStates.violationType !== undefined) {
+  if (toggleStates.reportedViolations !== undefined || toggleStates.violationType !== undefined || toggleStates.reportedViolations !== "" || toggleStates.violationType !== ""  ) {
+    str += "- ";
     if (toggleStates.reportedViolations !== undefined && toggleStates.reportedViolations !== "") {
-      str += "- " + toggleStates.reportedViolations + " violations or notices of citations, ";
-    } else if ((toggleStates.reportedViolations === undefined && toggleStates.reportedViolations === "") && (toggleStates.violationType !== undefined && toggleStates.violationType !== "")) {
-      str += "- ";
+      str += toggleStates.reportedViolations + " violations or notices of citations, ";
     }
-
     if (toggleStates.violationType !== undefined && toggleStates.violationType !== "") {
       str += "Most severe: " +  toHumanReadable(toTitleCase(toggleStates.violationType.toLowerCase()));
     }
-    return (str !== "") ? str + "\n": "";
+    return (str !== "- ") ? str + "\n": "";
   }
-  return "";
 }
 
 function downloadMethodologyFile(chartId, chartTitle, timeWindowDescription, toggleStates ){
