@@ -26,7 +26,6 @@ const ExportMenu = (props) => {
   const additionalInfo = chartIdToInfo[props.chartId] || [];
 
   const modalId = `additionalInfoModal-${props.chartId}`;
-
   const menuSpan = (
     <span className="fa-pull-right">
       <div className="dropdown show">
@@ -38,7 +37,7 @@ const ExportMenu = (props) => {
           {(props.shouldExport === undefined || props.shouldExport === true) && (
             <a className="dropdown-item" id={`downloadChartAsImage-${props.chartId}`} href="javascript:void(0);">Export image</a>
           )}
-          {(props.shouldExport === undefined || props.shouldExport === true) && (
+          {(props.shouldExport === undefined || props.shouldExport === true || props.isTable) && (
             <a className="dropdown-item" id={`downloadChartData-${props.chartId}`} href="javascript:void(0);">Export data</a>
           )}
         </div>
@@ -80,7 +79,7 @@ const ExportMenu = (props) => {
     </span>
   );
 
-  if ((props.shouldExport === undefined || props.shouldExport === true)) {
+  if (props.shouldExport === undefined || props.shouldExport === true || props.isTable) {
     const exportedStructureCallback = () => (
       {
         metric: props.metricTitle,
@@ -92,6 +91,14 @@ const ExportMenu = (props) => {
         props.elementDatasets, props.elementLabels,
         document.getElementById(props.chartId), exportedStructureCallback,
         props.filters, undefined, undefined, props.timeWindowDescription, true);
+    } else if (props.isTable) {
+      configureDownloadButtons(props.chartId,
+        props.metricTitle,
+        props.tableData,
+        props.tableLabels,
+        document.getElementById(props.chartId),
+        exportedStructureCallback,
+        props.filters, undefined, undefined, props.timeWindowDescription, true, props.isTable);
     } else {
       configureDownloadButtons(props.chartId,
         props.metricTitle,
@@ -99,7 +106,7 @@ const ExportMenu = (props) => {
         props.chart.props.data.labels,
         document.getElementById(props.chartId),
         exportedStructureCallback,
-        props.filters, undefined, undefined, props.timeWindowDescription, true);
+        props.filters, undefined, undefined, props.timeWindowDescription, true, false);
     }
   }
 

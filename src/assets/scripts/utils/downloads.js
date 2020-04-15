@@ -200,7 +200,7 @@ function configureDataDownloadButton(
             }
           }
 
-          if (convertValuesToNumbers === undefined || convertValuesToNumbers) {
+          if ((convertValuesToNumbers === undefined || convertValuesToNumbers) && !isNaN(Number(dataPoint))) {
             values[csvLabel] = Number(dataPoint);
           } else {
             values[csvLabel] = dataPoint;
@@ -240,15 +240,16 @@ function configureImageDownload(canvas, filename, chartTitle, toggleStates, char
 }
 function configureDownloadButtons(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
+  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload, isTable
 ) {
-  const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
-
-  const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
-  if (downloadChartAsImageButton) {
-    downloadChartAsImageButton.onclick = function downloadChartImage() {
-      configureImageDownload(chartBox || document.getElementById(chartId), `${filename}.png`, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload);
-    };
+  if (!isTable) {
+    const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
+    const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
+    if (downloadChartAsImageButton) {
+      downloadChartAsImageButton.onclick = function downloadChartImage() {
+        configureImageDownload(chartBox || document.getElementById(chartId), `${filename}.png`, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload);
+      };
+    }
   }
 
   const downloadChartDataButton = document.getElementById(`downloadChartData-${chartId}`);
