@@ -177,7 +177,7 @@ function downloadObjectAsJson(exportObj, exportName) {
 
 function configureDataDownloadButton(
   chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-  convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
+  convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload, isTable
 ) {
   return function downloadChartData() {
     const exportData = exportedStructureCallback();
@@ -208,10 +208,12 @@ function configureDataDownloadButton(
           i += 1;
         });
 
-        exportData.series.push({
-          label: dataset.label,
-          values,
-        });
+        let obj = {};
+        if (!isTable) {
+          obj.label = dataset.label;
+        }
+        obj.values = values;
+        exportData.series.push(obj);
       }
     });
 
@@ -256,7 +258,7 @@ function configureDownloadButtons(
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton(
       chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-      convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
+      convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload, isTable
     );
   }
 }

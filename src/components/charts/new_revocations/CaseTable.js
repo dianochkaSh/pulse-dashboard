@@ -136,10 +136,7 @@ const CaseTable = (props) => {
 
   const labels = ['DOC ID', 'District', 'Officer', 'Risk level', 'Officer Recommendation', 'Violation record'];
 
-  let tableData = [];
-
-  if (filteredData !== undefined) {
-    filteredData.map((record) => {
+  const tableData = filteredData === undefined ? [] : filteredData.map((record) => {
       let obj = { data: [] };
       obj.data.push(record.state_id);
       obj.data.push(record.district);
@@ -147,9 +144,8 @@ const CaseTable = (props) => {
       obj.data.push(humanReadableTitleCase(record.risk_level));
       obj.data.push(toTitleCase(record.officer_recommendation));
       obj.data.push(parseViolationRecord(record.violation_record));
-      tableData.push(obj);
+      return obj;
     });
-  }
 
   return (
     <div className="case-table">
