@@ -251,23 +251,22 @@ function configureImageDownload(canvas, filename, chartTitle, toggleStates, char
 
 function configureDownloadButtons(
   chartId, chartTitle, chartDatasets, chartLabels, chartBox,
-  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload, isTable
+  exportedStructureCallback, toggleStates, convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
 ) {
-  if (!isTable) {
-    const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
-    const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
-    if (downloadChartAsImageButton) {
-      downloadChartAsImageButton.onclick = function downloadChartImage() {
-        configureImageDownload(chartBox || document.getElementById(chartId), `${filename}.png`, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload);
-      };
-    }
+
+  const filename = configureFilename(chartId, toggleStates, shouldZipDownload);
+  const downloadChartAsImageButton = document.getElementById(`downloadChartAsImage-${chartId}`);
+  if (downloadChartAsImageButton) {
+    downloadChartAsImageButton.onclick = function downloadChartImage() {
+      configureImageDownload(chartBox || document.getElementById(chartId), `${filename}.png`, chartTitle, toggleStates, chartId, timeWindowDescription, shouldZipDownload);
+    };
   }
 
   const downloadChartDataButton = document.getElementById(`downloadChartData-${chartId}`);
   if (downloadChartDataButton) {
     downloadChartDataButton.onclick = configureDataDownloadButton(
       chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-      convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload, isTable
+      convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
     );
   }
 }
@@ -310,11 +309,11 @@ function downloadHtmlElementAsImage(
 
 function downloadHtmlElementAsData(
   chartId, chartTitle, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-  convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload
+  convertValuesToNumbers, handleTimeStringLabels, timeWindowDescription, shouldZipDownload, isTable
 ) {
   const downloadChartData = configureDataDownloadButton(
     chartId, chartDatasets, chartLabels, exportedStructureCallback, toggleStates,
-    convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload
+    convertValuesToNumbers, handleTimeStringLabels, chartTitle, timeWindowDescription, shouldZipDownload, isTable
   );
   downloadChartData();
 }
